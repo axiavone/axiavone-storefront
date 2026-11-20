@@ -1,0 +1,95 @@
+-- ==============================================================================
+-- PART 2 OF 3: MVP PRODUCTS 1-3 ($0 FREE LEAD, $12 CORE, $19 PRO RLS)
+-- Run this second in Supabase SQL Editor (after Part 1).
+-- ==============================================================================
+
+insert into public.storefront_products (
+  slug,
+  title,
+  tagline,
+  description_md,
+  tier,
+  price_usd,
+  checkout_url,
+  secondary_checkout_url,
+  preview_image_url,
+  features_json,
+  seo_title,
+  seo_description,
+  keywords,
+  status,
+  created_by_division,
+  published_at
+)
+values
+  (
+    'ai-micro-saas-launch-security-audit',
+    'AI & Micro-SaaS Launch Security Audit Checklist',
+    'A 48-point pre-launch security and production readiness checklist built to stop API key leaks, open RLS tables, and runaway LLM spend.',
+    E'## Ship Without Leaving Your Database or AI Keys Exposed\n\nMost micro-SaaS breaches happen in the first 72 hours after launch—usually from misconfigured Supabase policies, leaked service-role keys in client bundles, or unthrottled AI endpoints.\n\n### What Is Inside\n- **Supabase & Postgres Hardening**: Step-by-step verification for `FORCE ROW LEVEL SECURITY`, anon privilege stripping, and column-level revokes.\n- **Client/Server Boundary Audit**: Exact checks to ensure zero secrets slip into `VITE_*` or `NEXT_PUBLIC_*` build artifacts.\n- **API Rate-Limiting & Cost Caps**: Practical thresholds to block automated scraping and unexpected OpenAI/Gemini billing spikes.\n- **Pre-Launch DNS & Headers**: Ready-to-paste CSP, HSTS, and CORS rules for Vercel and Cloudflare.\n\n### Built For\nIndie founders, technical operators, and small product teams preparing for Tier-1 commercial traffic.',
+    'free_lead',
+    0.00,
+    'https://polar.sh',
+    null,
+    '/images/products/ai-micro-saas-launch-security-audit.svg',
+    '["48-point security & launch audit checklist (Markdown + PDF)", "Supabase RLS & column-revoke verification queries", "Client bundle secret-leak grep script", "Vercel & Cloudflare security header templates"]'::jsonb,
+    'AI & Micro-SaaS Launch Security Audit Checklist (Free) | AXIAVONE',
+    'Free 48-point pre-launch security checklist for AI apps and micro-SaaS founders covering Supabase RLS, secret isolation, and rate limiting.',
+    array['micro-saas security checklist', 'supabase rls audit', 'ai app launch security', 'saas pre-launch checklist'],
+    'published',
+    'DIV-08',
+    now() - interval '10 days'
+  ),
+  (
+    'humanized-b2b-cold-outreach-system',
+    'Humanized B2B Cold-Outreach & Client Acquisition System',
+    'Plain-English outbound sequences, signal-based prospect qualification rubrics, and deliverability setup for US and UK B2B founders.',
+    E'## Outbound That Reads Like a Peer—Not an Automated Drip\n\nEnterprise and mid-market buyers in North America and the UK delete generic AI-written pitches on sight. This operational playbook gives technical founders a repeatable, low-volume outbound system built around real buyer triggers.\n\n### What You Get\n- **14 Signal-Based Email & LinkedIn Frameworks**: Written in concise, zero-fluff executive English for product launches, audits, and consulting retainers.\n- **Domain & Inbox Deliverability SOP**: Exact SPF, DKIM, DMARC, and warm-up cadence settings to keep primary-inbox placement above 95%.\n- **3-Tier Prospect Qualification Matrix**: Filter out low-fit leads before sending a single message.\n- **Follow-Up & Objection Playbook**: Calm, respectful responses for timing, budget, and incumbent-vendor replies.\n\n### Ideal For\nB2B SaaS founders, technical consultants, and fractional operators booking 5–12 qualified discovery calls a month without ad spend.',
+    'core_12',
+    12.00,
+    'https://polar.sh',
+    'https://lemonsqueezy.com',
+    '/images/products/humanized-b2b-cold-outreach-system.svg',
+    '["14 plain-English B2B outreach & follow-up templates", "SPF/DKIM/DMARC & inbox deliverability SOP", "Signal-based lead scoring & qualification sheet", "Zero-hype objection handling scripts"]'::jsonb,
+    'Humanized B2B Cold-Outreach & Client Acquisition System ($12) | AXIAVONE',
+    'Repeatable B2B cold email and LinkedIn acquisition playbook with deliverability SOPs and natural executive outreach frameworks for US and UK markets.',
+    array['b2b cold outreach system', 'founder led sales playbook', 'cold email deliverability sop', 'client acquisition system'],
+    'published',
+    'DIV-15',
+    now() - interval '8 days'
+  ),
+  (
+    'zero-leak-supabase-rls-auth-boilerplate',
+    'Zero-Leak Supabase RLS & Auth Security Boilerplate',
+    'Production-tested PostgreSQL Row Level Security policies, multi-tenant RBAC schemas, and automated isolation tests for serious SaaS apps.',
+    E'## Database-Level Tenant Isolation You Can Prove\n\nRelying on `WHERE user_id = ...` inside application routes is brittle. One overlooked endpoint exposes customer data. This boilerplate puts tenant and role enforcement directly inside PostgreSQL.\n\n### Core Components\n- **Multi-Tenant Schema (`orgs`, `memberships`, `invites`, `audit_logs`)**: Clean foreign-key architecture with strict cascading and indexed lookups.\n- **High-Speed RLS Policies**: Optimized `security definer` helper functions that avoid recursive query slowdowns.\n- **Role-Based Access Matrix**: Pre-configured permissions for `owner`, `admin`, `member`, and `readonly` roles.\n- **Automated Isolation Test Suite**: 25+ SQL verification checks confirming anonymous and cross-organization requests return zero rows.\n\n### Compatibility\nDrop directly into any Next.js, Vite, or Remix application backed by Supabase PostgreSQL.',
+    'pro_19',
+    19.00,
+    'https://polar.sh',
+    'https://lemonsqueezy.com',
+    '/images/products/zero-leak-supabase-rls-auth-boilerplate.svg',
+    '["Complete multi-tenant Postgres schema & migrations", "Indexed RLS policies for Owner, Admin, Member & Billing", "25+ automated SQL tenant-isolation verification tests", "Server vs. anon client separation reference code"]'::jsonb,
+    'Zero-Leak Supabase RLS & Auth Security Boilerplate ($19) | AXIAVONE',
+    'Production PostgreSQL Row Level Security policies, multi-tenant RBAC schema, and automated isolation tests for Supabase SaaS applications.',
+    array['supabase rls boilerplate', 'multi-tenant postgres security', 'supabase rbac auth', 'zero-leak database schema'],
+    'published',
+    'DIV-08',
+    now() - interval '6 days'
+  )
+on conflict (slug) do update set
+  title = excluded.title,
+  tagline = excluded.tagline,
+  description_md = excluded.description_md,
+  tier = excluded.tier,
+  price_usd = excluded.price_usd,
+  checkout_url = excluded.checkout_url,
+  secondary_checkout_url = excluded.secondary_checkout_url,
+  preview_image_url = excluded.preview_image_url,
+  features_json = excluded.features_json,
+  seo_title = excluded.seo_title,
+  seo_description = excluded.seo_description,
+  keywords = excluded.keywords,
+  status = excluded.status,
+  created_by_division = excluded.created_by_division,
+  published_at = coalesce(public.storefront_products.published_at, excluded.published_at),
+  updated_at = now();

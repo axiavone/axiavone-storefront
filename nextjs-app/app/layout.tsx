@@ -23,11 +23,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://store.axiavone.com'),
   title: {
-    default: 'AXIAVONE — Production Software Blueprints & Developer Kits',
+    default: 'AXIAVONE — Digital Systems, Micro-Tools & Software Blueprints',
     template: '%s',
   },
   description:
-    'Production-grade developer tools, Supabase security blueprints, and SaaS billing architectures built for engineering teams in the US, UK, Canada, and Australia.',
+    'Production-grade digital systems, micro-tools, AI operational playbooks, and software blueprints engineered for engineering teams and founders in the US, UK, Canada, and Australia.',
   openGraph: {
     type: 'website',
     locale: 'en_US',

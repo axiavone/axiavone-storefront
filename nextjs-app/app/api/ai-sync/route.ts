@@ -21,7 +21,8 @@ interface SyncProductPayload {
     tier: ProductTier;
     price_usd: number;
     checkout_url: string;
-    preview_image_url: string;
+    secondary_checkout_url?: string | null;
+    preview_image_url?: string | null;
     features_json: string[];
     seo_title: string;
     seo_description: string;
@@ -154,8 +155,13 @@ export async function POST(request: NextRequest) {
   }
 
   // 3. Handle product upsert by slug (DIV-08 / DIV-09 / DIV-15 / DIV-21)
-  const product = (body as SyncProductPayload).product;
-  if (!product) {
+  // Accepts both { action: 'upsert_product', product: { ... } } and flat { slug, title, ... }
+  const rawBody = body as unknown as Record<string, unknown>;
+  const product = (
+    rawBody.product && typeof rawBody.product === 'object' ? rawBody.product : rawBody
+  ) as Partial<SyncProductPayload['product']>;
+
+  if (!product || typeof product !== 'object') {
     return NextResponse.json(
       { error: 'Missing required product payload.' },
       { status: 422 }
@@ -170,22 +176,52 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const parsedPrice =
+    typeof product.price_usd === 'number'
+      ? product.price_usd
+      : typeof product.price_usd === 'string' && String(product.price_usd).trim() !== ''
+        ? Number(product.price_usd)
+        : NaN;
+
+  const rawPreview =
+    typeof product.preview_image_url === 'string' ? product.preview_image_url.trim() : '';
+  const previewImageUrl = rawPreview ? rawPreview : null;
+
+  if (previewImageUrl && !isValidUrl(previewImageUrl)) {
+    return NextResponse.json({ error: 'Invalid preview_image_url format.' }, { status: 422 });
+  }
+
+  const checkoutUrl =
+    typeof product.checkout_url === 'string' && product.checkout_url.trim()
+      ? product.checkout_url.trim()
+      : 'https://polar.sh';
+
+  if (!isValidUrl(checkoutUrl)) {
+    return NextResponse.json({ error: 'Invalid checkout_url format.' }, { status: 422 });
+  }
+
+  const statusValue: ProductStatus =
+    typeof product.status === 'string' && VALID_STATUSES.includes(product.status as ProductStatus)
+      ? (product.status as ProductStatus)
+      : 'draft';
+
   if (
-    !product.title?.trim() ||
-    !product.tagline?.trim() ||
-    !product.description_md?.trim() ||
+    typeof product.title !== 'string' ||
+    !product.title.trim() ||
+    typeof product.tagline !== 'string' ||
+    !product.tagline.trim() ||
+    typeof product.description_md !== 'string' ||
+    !product.description_md.trim() ||
+    !product.tier ||
     !VALID_TIERS.includes(product.tier) ||
-    typeof product.price_usd !== 'number' ||
-    product.price_usd < 0 ||
-    !isValidUrl(product.checkout_url) ||
-    !isValidUrl(product.preview_image_url) ||
-    !Array.isArray(product.features_json) ||
-    !product.seo_title?.trim() ||
-    !product.seo_description?.trim() ||
-    !VALID_STATUSES.includes(product.status)
+    Number.isNaN(parsedPrice) ||
+    parsedPrice < 0
   ) {
     return NextResponse.json(
-      { error: 'Validation failed: check required product fields, tier, price_usd, URLs, and status.' },
+      {
+        error:
+          'Validation failed: required fields are slug, title, tagline, description_md, tier, and non-negative price_usd.',
+      },
       { status: 422 }
     );
   }
@@ -196,24 +232,46 @@ export async function POST(request: NextRequest) {
     ? product.created_by_division
     : 'DIV-08';
 
+  const title = product.title.trim();
+  const tagline = product.tagline.trim();
+
+  const rawSecondary =
+    typeof product.secondary_checkout_url === 'string'
+      ? product.secondary_checkout_url.trim()
+      : '';
+  const secondaryCheckoutUrl = rawSecondary ? rawSecondary : null;
+
+  if (secondaryCheckoutUrl && !isValidUrl(secondaryCheckoutUrl)) {
+    return NextResponse.json({ error: 'Invalid secondary_checkout_url format.' }, { status: 422 });
+  }
+
   const record = {
     slug,
-    title: product.title.trim(),
-    tagline: product.tagline.trim(),
+    title,
+    tagline,
     description_md: product.description_md,
     tier: product.tier,
-    price_usd: Number(product.price_usd.toFixed(2)),
-    checkout_url: product.checkout_url.trim(),
-    preview_image_url: product.preview_image_url.trim(),
-    features_json: product.features_json.map((f) => String(f).trim()).filter(Boolean),
-    seo_title: product.seo_title.trim(),
-    seo_description: product.seo_description.trim(),
+    price_usd: Number(parsedPrice.toFixed(2)),
+    checkout_url: checkoutUrl,
+    secondary_checkout_url: secondaryCheckoutUrl,
+    preview_image_url: previewImageUrl,
+    features_json: Array.isArray(product.features_json)
+      ? product.features_json.map((f) => String(f).trim()).filter(Boolean)
+      : [],
+    seo_title:
+      typeof product.seo_title === 'string' && product.seo_title.trim()
+        ? product.seo_title.trim()
+        : `${title} | AXIAVONE`,
+    seo_description:
+      typeof product.seo_description === 'string' && product.seo_description.trim()
+        ? product.seo_description.trim()
+        : tagline,
     keywords: Array.isArray(product.keywords)
       ? product.keywords.map((k) => String(k).trim()).filter(Boolean)
       : [],
-    status: product.status,
+    status: statusValue,
     created_by_division: division,
-    published_at: product.status === 'published' ? new Date().toISOString() : null,
+    published_at: statusValue === 'published' ? new Date().toISOString() : null,
   };
 
   const { data: upserted, error: upsertError } = await supabase
@@ -223,6 +281,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (upsertError || !upserted) {
+    console.error('[ai-sync] Supabase upsert failed:', upsertError?.message);
     return NextResponse.json(
       { error: 'Database upsert failed.' },
       { status: 500 }

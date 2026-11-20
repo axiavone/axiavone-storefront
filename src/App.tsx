@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowUpRight, Check, Code2, ShieldCheck, Star } from 'lucide-react';
+import { ArrowUpRight, Check, ShieldCheck, Star } from 'lucide-react';
 import {
   TIER_FILTERS,
   TIER_LABELS,
@@ -13,30 +13,10 @@ import {
   type PublicReview,
 } from './types/storefront.ts';
 import { LegalModal, type LegalDocType } from './components/LegalModal.tsx';
+import { ProductCover } from './components/ProductCover.tsx';
 import { ProductDetailView } from './components/ProductDetailView.tsx';
-
-function ProductCardImage({ src, alt }: { src: string; alt: string }) {
-  const [failed, setFailed] = useState(false);
-
-  if (failed) {
-    return (
-      <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-[#111113] to-[#18181B] p-6 text-center">
-        <Code2 className="h-8 w-8 text-[#3B82F6] mb-2" aria-hidden="true" />
-        <span className="text-xs font-medium text-zinc-400">{alt}</span>
-      </div>
-    );
-  }
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      referrerPolicy="no-referrer"
-      onError={() => setFailed(true)}
-      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-    />
-  );
-}
+import { SocialLinks } from './components/SocialLinks.tsx';
+import { fetchPublishedCatalogClient } from './lib/supabaseClient.ts';
 
 function getSlugFromPath(pathname: string): string | null {
   const match = pathname.match(/^\/products\/([^/]+)\/?$/);
@@ -62,25 +42,21 @@ export default function App() {
 
   useEffect(() => {
     if (!activeSlug) {
-      document.title = 'AXIAVONE — Production Software Blueprints & Developer Kits';
+      document.title = 'AXIAVONE — Digital Systems, Micro-Tools & Software Blueprints';
     }
   }, [activeSlug]);
 
   const loadCatalog = () => {
     setLoading(true);
     setFetchError(null);
-    fetch('/api/products')
-      .then(async (res) => {
-        if (!res.ok) throw new Error('Unable to load published catalog.');
-        return (await res.json()) as { products: PublicProduct[]; reviews: PublicReview[] };
-      })
+    fetchPublishedCatalogClient()
       .then((data) => {
         setProducts(data.products);
         setReviews(data.reviews);
         setLoading(false);
       })
       .catch((err: Error) => {
-        setFetchError(err.message);
+        setFetchError(err.message || 'Unable to load published catalog.');
         setLoading(false);
       });
   };
@@ -184,11 +160,12 @@ export default function App() {
                   United States · United Kingdom · Canada · Australia · USD Checkout
                 </p>
                 <h1 className="font-display text-4xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.1] [text-wrap:balance]">
-                  Production software blueprints engineered for immediate commercial deployment.
+                  Production-grade digital systems, micro-tools &amp; blueprints engineered for immediate commercial execution.
                 </h1>
                 <p className="mt-6 text-base sm:text-lg text-zinc-400 leading-relaxed max-w-2xl">
-                  Battle-tested TypeScript starter architectures, PostgreSQL security matrices, and
-                  idempotent billing handlers. Instant digital delivery with full commercial rights.
+                  Battle-tested software architectures, autonomous AI operational playbooks, and
+                  zero-leak security templates built for modern founders and engineering teams.
+                  Instant digital delivery with full commercial rights.
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <button
@@ -317,9 +294,13 @@ export default function App() {
                         }}
                         className="block aspect-[4/3] overflow-hidden bg-[#18181B]"
                       >
-                        <ProductCardImage
-                          src={product.preview_image_url}
-                          alt={product.title}
+                        <ProductCover
+                          slug={product.slug}
+                          title={product.title}
+                          tier={product.tier}
+                          priceUsd={product.price_usd}
+                          imageUrl={product.preview_image_url}
+                          className="transition-transform duration-300 group-hover:scale-[1.02]"
                         />
                       </a>
 
@@ -352,17 +333,19 @@ export default function App() {
                           {product.tagline}
                         </p>
 
-                        <ul className="mt-5 space-y-2 border-t border-white/10 pt-4 text-xs text-zinc-300">
-                          {product.features_json.slice(0, 3).map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <Check
-                                className="h-3.5 w-3.5 text-[#3B82F6] mt-0.5 shrink-0"
-                                aria-hidden="true"
-                              />
-                              <span>{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        {product.features_json.length > 0 && (
+                          <ul className="mt-5 space-y-2 border-t border-white/10 pt-4 text-xs text-zinc-300">
+                            {product.features_json.slice(0, 3).map((feature, idx) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <Check
+                                  className="h-3.5 w-3.5 text-[#3B82F6] mt-0.5 shrink-0"
+                                  aria-hidden="true"
+                                />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
 
                         <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-4">
                           <a
@@ -480,38 +463,47 @@ export default function App() {
 
       {/* Clean Legal & Brand Footer */}
       <footer className="border-t border-white/10 bg-[#09090B]">
-        <div className="mx-auto flex max-w-6xl flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-6 py-10 text-xs text-zinc-400">
-          <div>
-            <span className="font-display font-semibold text-white">AXIAVONE</span>
-            <span className="mx-2" aria-hidden="true">
-              ·
-            </span>
-            <span>
-              © {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.
-            </span>
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-xs text-zinc-400">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <span className="font-display font-semibold text-white">AXIAVONE</span>
+              <span className="mx-2" aria-hidden="true">
+                ·
+              </span>
+              <span>
+                © {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-6">
+              <button
+                type="button"
+                onClick={() => setLegalDoc('terms')}
+                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Terms of Service
+              </button>
+              <button
+                type="button"
+                onClick={() => setLegalDoc('privacy')}
+                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Privacy Policy
+              </button>
+              <button
+                type="button"
+                onClick={() => setLegalDoc('license')}
+                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Commercial License
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-6">
-            <button
-              type="button"
-              onClick={() => setLegalDoc('terms')}
-              className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-            >
-              Terms of Service
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalDoc('privacy')}
-              className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-            >
-              Privacy Policy
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalDoc('license')}
-              className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-            >
-              Commercial License
-            </button>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/[0.07] pt-6">
+            <SocialLinks />
+            <span className="text-[11px] text-zinc-500">
+              Tier-1 Digital Systems · Instant USD Checkout
+            </span>
           </div>
         </div>
       </footer>

@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, ArrowUpRight, Check, ShieldCheck, Star } from 'lucide-react';
 import { createPublicSupabaseClient } from '@/lib/supabase';
 import { TIER_LABELS, type StorefrontProduct, type StorefrontReview } from '@/lib/types';
+import ProductCover from '@/components/ProductCover';
+import SocialLinks from '@/components/SocialLinks';
 
 export const revalidate = 60;
 
@@ -21,7 +23,7 @@ async function getPublishedProductBySlug(slug: string): Promise<{
   const { data: product } = await supabase
     .from('storefront_products')
     .select(
-      'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, status, published_at, created_at, updated_at'
+      'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, secondary_checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, status, published_at, created_at, updated_at'
     )
     .eq('slug', slug)
     .eq('status', 'published')
@@ -42,6 +44,7 @@ async function getPublishedProductBySlug(slug: string): Promise<{
     product: {
       ...(product as StorefrontProduct),
       price_usd: Number(product.price_usd),
+      secondary_checkout_url: (product as StorefrontProduct).secondary_checkout_url || null,
       features_json: Array.isArray(product.features_json) ? product.features_json : [],
       keywords: Array.isArray(product.keywords) ? product.keywords : [],
     },
@@ -60,28 +63,32 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
-  return {
-    title: product.seo_title,
-    description: product.seo_description,
-    keywords: product.keywords,
-    openGraph: {
-      title: product.seo_title,
-      description: product.seo_description,
-      type: 'website',
-      images: [
+  const images = product.preview_image_url
+    ? [
         {
           url: product.preview_image_url,
           width: 1200,
           height: 900,
           alt: product.title,
         },
-      ],
+      ]
+    : undefined;
+
+  return {
+    title: product.seo_title || `${product.title} | AXIAVONE`,
+    description: product.seo_description || product.tagline,
+    keywords: product.keywords,
+    openGraph: {
+      title: product.seo_title || `${product.title} | AXIAVONE`,
+      description: product.seo_description || product.tagline,
+      type: 'website',
+      ...(images ? { images } : {}),
     },
     twitter: {
       card: 'summary_large_image',
-      title: product.seo_title,
-      description: product.seo_description,
-      images: [product.preview_image_url],
+      title: product.seo_title || `${product.title} | AXIAVONE`,
+      description: product.seo_description || product.tagline,
+      ...(product.preview_image_url ? { images: [product.preview_image_url] } : {}),
     },
   };
 }
@@ -153,16 +160,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </div>
 
             <div className="aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-[#111113]">
-              <img
-                src={product.preview_image_url}
-                alt={product.title}
-                referrerPolicy="no-referrer"
-                className="h-full w-full object-cover"
+              <ProductCover
+                slug={product.slug}
+                title={product.title}
+                tier={product.tier}
+                priceUsd={product.price_usd}
+                imageUrl={product.preview_image_url}
               />
             </div>
 
             <article className="prose prose-invert prose-zinc max-w-none border-t border-white/10 pt-8 prose-headings:font-display prose-headings:tracking-tight prose-a:text-[#60A5FA] prose-code:font-mono prose-code:text-zinc-200">
-              <ReactMarkdown>{product.description_md}</ReactMarkdown>
+              <ReactMarkdown>
+                {(product.description_md || '').replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n')}
+              </ReactMarkdown>
             </article>
 
             {/* Product-Specific Verified Reviews */}
@@ -227,25 +237,52 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 ))}
               </ul>
 
-              <a
-                href={product.checkout_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
-              >
-                {product.price_usd === 0
-                  ? 'Download Free Package'
-                  : `Checkout Instantly — $${product.price_usd.toFixed(0)} USD`}
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </a>
+              <div className="mt-8 space-y-3">
+                <a
+                  href={product.checkout_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
+                >
+                  {product.price_usd === 0
+                    ? 'Download Free Package (Polar.sh)'
+                    : `Pay with Card / Apple Pay — $${product.price_usd.toFixed(0)} USD`}
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+
+                {product.secondary_checkout_url && (
+                  <a
+                    href={product.secondary_checkout_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/15 bg-[#18181B] px-5 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-white/30 hover:text-white"
+                  >
+                    {product.price_usd === 0
+                      ? 'Mirror Download (Lemon Squeezy)'
+                      : 'Pay with PayPal / Card (Lemon Squeezy)'}
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                )}
+              </div>
 
               <p className="mt-4 text-center text-xs text-zinc-400">
-                Secure checkout via Polar.sh / Lemon Squeezy · US/UK/CA/AU VAT invoices included
+                Instant delivery via Polar.sh &amp; Lemon Squeezy · Card, Apple Pay, PayPal &amp; US/UK/CA/AU tax invoices supported
               </p>
             </div>
           </aside>
         </div>
       </main>
+
+      <footer className="border-t border-white/10 bg-[#09090B]">
+        <div className="mx-auto flex max-w-6xl flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-8 text-xs text-zinc-400">
+          <div>
+            <span className="font-display font-semibold text-white">AXIAVONE</span>
+            <span className="mx-2" aria-hidden="true">·</span>
+            <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+          </div>
+          <SocialLinks />
+        </div>
+      </footer>
     </div>
   );
 }

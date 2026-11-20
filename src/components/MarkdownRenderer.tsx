@@ -5,6 +5,8 @@ interface MarkdownRendererProps {
 }
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+  const normalizedContent = content.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
+
   return (
     <div className="space-y-4 text-[15px] leading-relaxed text-zinc-300">
       <ReactMarkdown
@@ -43,7 +45,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           ),
         }}
       >
-        {content}
+        {normalizedContent}
       </ReactMarkdown>
     </div>
   );

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#09090B" />
+      <stop offset="100%" stop-color="#101218" />
+    </linearGradient>
+    <radialGradient id="glow2" cx="60%" cy="45%" r="48%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#09090B" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid2" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg2)" />
+  <rect width="1200" height="900" fill="url(#grid2)" />
+  <rect width="1200" height="900" fill="url(#glow2)" />
+
+  <!-- Signal Routing Pipeline -->
+  <rect x="160" y="160" width="880" height="560" rx="16" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.5" />
+
+  <!-- Signal Node Left -->
+  <rect x="220" y="250" width="210" height="120" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.12" />
+  <rect x="244" y="278" width="90" height="10" rx="5" fill="#3B82F6" />
+  <rect x="244" y="304" width="150" height="8" rx="4" fill="#A1A1AA" fill-opacity="0.6" />
+  <rect x="244" y="324" width="120" height="8" rx="4" fill="#71717A" fill-opacity="0.6" />
+
+  <rect x="220" y="420" width="210" height="120" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.12" />
+  <rect x="244" y="448" width="110" height="10" rx="5" fill="#60A5FA" />
+  <rect x="244" y="474" width="145" height="8" rx="4" fill="#A1A1AA" fill-opacity="0.6" />
+  <rect x="244" y="494" width="100" height="8" rx="4" fill="#71717A" fill-opacity="0.6" />
+
+  <!-- Connecting Signal Paths -->
+  <path d="M430 310 C495 310 495 395 560 395" stroke="#3B82F6" stroke-width="2" />
+  <path d="M430 480 C495 480 495 395 560 395" stroke="#3B82F6" stroke-opacity="0.65" stroke-width="2" />
+
+  <!-- Outbound Sequence Card -->
+  <rect x="560" y="235" width="420" height="330" rx="12" fill="#18181B" stroke="#3B82F6" stroke-opacity="0.45" stroke-width="1.5" />
+  <rect x="596" y="272" width="140" height="12" rx="6" fill="#E4E4E7" fill-opacity="0.85" />
+  <line x1="596" y1="308" x2="944" y2="308" stroke="#FFFFFF" stroke-opacity="0.08" />
+  <rect x="596" y="334" width="320" height="10" rx="5" fill="#A1A1AA" fill-opacity="0.65" />
+  <rect x="596" y="358" width="290" height="10" rx="5" fill="#A1A1AA" fill-opacity="0.55" />
+  <rect x="596" y="382" width="240" height="10" rx="5" fill="#A1A1AA" fill-opacity="0.45" />
+
+  <!-- Deliverability Bar -->
+  <rect x="596" y="438" width="348" height="86" rx="8" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.08" />
+  <text x="620" y="472" fill="#60A5FA" font-family="monospace" font-size="14">SPF · DKIM · DMARC PASS</text>
+  <rect x="620" y="490" width="300" height="8" rx="4" fill="#27272A" />
+  <rect x="620" y="490" width="286" height="8" rx="4" fill="#2563EB" />
+
+  <text x="220" y="655" fill="#71717A" font-family="monospace" font-size="16" letter-spacing="2">AXIAVONE // B2B CLIENT ACQUISITION SYSTEM</text>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#09090B" />
+      <stop offset="100%" stop-color="#0F1117" />
+    </linearGradient>
+    <radialGradient id="glow3" cx="50%" cy="48%" r="46%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.24" />
+      <stop offset="100%" stop-color="#09090B" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid3" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg3)" />
+  <rect width="1200" height="900" fill="url(#grid3)" />
+  <rect width="1200" height="900" fill="url(#glow3)" />
+
+  <!-- RLS Isolation Matrix Frame -->
+  <rect x="160" y="140" width="880" height="580" rx="16" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.5" />
+
+  <!-- Top Tenant Nodes -->
+  <rect x="230" y="210" width="210" height="82" rx="10" fill="#18181B" stroke="#3B82F6" stroke-opacity="0.6" />
+  <text x="260" y="246" fill="#FAFAFA" font-family="monospace" font-size="14">ROLE: ANON</text>
+  <text x="260" y="270" fill="#60A5FA" font-family="monospace" font-size="12">PUBLISHED ONLY</text>
+
+  <rect x="495" y="210" width="210" height="82" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.14" />
+  <text x="525" y="246" fill="#FAFAFA" font-family="monospace" font-size="14">ROLE: MEMBER</text>
+  <text x="525" y="270" fill="#A1A1AA" font-family="monospace" font-size="12">ORG_ID = JWT()</text>
+
+  <rect x="760" y="210" width="210" height="82" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.14" />
+  <text x="790" y="246" fill="#FAFAFA" font-family="monospace" font-size="14">ROLE: ADMIN</text>
+  <text x="790" y="270" fill="#A1A1AA" font-family="monospace" font-size="12">RBAC VERIFIED</text>
+
+  <!-- Policy Connectors -->
+  <line x1="335" y1="292" x2="335" y2="380" stroke="#3B82F6" stroke-width="2" />
+  <line x1="600" y1="292" x2="600" y2="380" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="1.5" />
+  <line x1="865" y1="292" x2="865" y2="380" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="1.5" />
+
+  <!-- Postgres Kernel Enforcement Layer -->
+  <rect x="230" y="380" width="740" height="220" rx="12" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.1" />
+  <text x="264" y="422" fill="#60A5FA" font-family="monospace" font-size="15">FORCE ROW LEVEL SECURITY</text>
+  <line x1="264" y1="444" x2="936" y2="444" stroke="#FFFFFF" stroke-opacity="0.08" />
+
+  <rect x="264" y="470" width="206" height="92" rx="8" fill="#111113" stroke="#3B82F6" stroke-opacity="0.4" />
+  <text x="284" y="504" fill="#E4E4E7" font-family="monospace" font-size="13">SELECT</text>
+  <text x="284" y="532" fill="#71717A" font-family="monospace" font-size="12">STRICT POLICY</text>
+
+  <rect x="497" y="470" width="206" height="92" rx="8" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.08" />
+  <text x="517" y="504" fill="#E4E4E7" font-family="monospace" font-size="13">INSERT / UPDATE</text>
+  <text x="517" y="532" fill="#71717A" font-family="monospace" font-size="12">JWT CLAIM GUARD</text>
+
+  <rect x="730" y="470" width="206" height="92" rx="8" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.08" />
+  <text x="750" y="504" fill="#E4E4E7" font-family="monospace" font-size="13">ISOLATION SUITE</text>
+  <text x="750" y="532" fill="#60A5FA" font-family="monospace" font-size="12">25/25 TESTS PASS</text>
+
+  <text x="230" y="668" fill="#71717A" font-family="monospace" font-size="16" letter-spacing="2">AXIAVONE // ZERO-LEAK SUPABASE RLS BOILERPLATE</text>
+</svg>

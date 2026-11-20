@@ -10,7 +10,8 @@ export interface StorefrontProduct {
   tier: ProductTier;
   price_usd: number;
   checkout_url: string;
-  preview_image_url: string;
+  secondary_checkout_url: string | null;
+  preview_image_url: string | null;
   features_json: string[];
   seo_title: string;
   seo_description: string;

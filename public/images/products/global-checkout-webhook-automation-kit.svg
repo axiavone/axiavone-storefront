@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#09090B" />
+      <stop offset="100%" stop-color="#111319" />
+    </linearGradient>
+    <radialGradient id="glow4" cx="55%" cy="45%" r="48%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.24" />
+      <stop offset="100%" stop-color="#09090B" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid4" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg4)" />
+  <rect width="1200" height="900" fill="url(#grid4)" />
+  <rect width="1200" height="900" fill="url(#glow4)" />
+
+  <!-- Dual Gateway Cards -->
+  <rect x="170" y="150" width="860" height="570" rx="16" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.5" />
+
+  <rect x="220" y="210" width="340" height="160" rx="12" fill="#18181B" stroke="#3B82F6" stroke-opacity="0.6" stroke-width="1.5" />
+  <text x="252" y="256" fill="#60A5FA" font-family="monospace" font-size="14">PRIMARY GATEWAY</text>
+  <text x="252" y="294" fill="#FAFAFA" font-family="sans-serif" font-size="24" font-weight="600">Polar.sh</text>
+  <text x="252" y="330" fill="#A1A1AA" font-family="monospace" font-size="13">CARD · APPLE PAY · USD</text>
+
+  <rect x="640" y="210" width="340" height="160" rx="12" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1.5" />
+  <text x="672" y="256" fill="#A1A1AA" font-family="monospace" font-size="14">SECONDARY GATEWAY</text>
+  <text x="672" y="294" fill="#FAFAFA" font-family="sans-serif" font-size="24" font-weight="600">Lemon Squeezy</text>
+  <text x="672" y="330" fill="#A1A1AA" font-family="monospace" font-size="13">PAYPAL · GLOBAL TAX</text>
+
+  <!-- Webhook Verification Funnel -->
+  <path d="M390 370 V420 H600" stroke="#3B82F6" stroke-width="2" />
+  <path d="M810 370 V420 H600" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5" />
+  <line x1="600" y1="420" x2="600" y2="460" stroke="#3B82F6" stroke-width="2" />
+
+  <!-- Idempotency Ledger -->
+  <rect x="220" y="460" width="760" height="150" rx="12" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.1" />
+  <text x="256" y="502" fill="#FAFAFA" font-family="monospace" font-size="15">HMAC TIMING-SAFE VERIFIER + POSTGRES IDEMPOTENCY LEDGER</text>
+  <rect x="256" y="528" width="210" height="48" rx="6" fill="#111113" stroke="#3B82F6" stroke-opacity="0.4" />
+  <text x="276" y="557" fill="#60A5FA" font-family="monospace" font-size="13">SIG: VERIFIED</text>
+  <rect x="490" y="528" width="220" height="48" rx="6" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.08" />
+  <text x="510" y="557" fill="#E4E4E7" font-family="monospace" font-size="13">EVENT_ID: UNIQUE</text>
+  <rect x="734" y="528" width="210" height="48" rx="6" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.08" />
+  <text x="754" y="557" fill="#E4E4E7" font-family="monospace" font-size="13">LICENSE: ISSUED</text>
+
+  <text x="220" y="672" fill="#71717A" font-family="monospace" font-size="16" letter-spacing="2">AXIAVONE // CHECKOUT &amp; WEBHOOK AUTOMATION KIT</text>
+</svg>

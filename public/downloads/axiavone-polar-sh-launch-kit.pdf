@@ -1,0 +1,1288 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4679
+>>
+stream
+0.5670000000000001 w
+0 G
+0.04 0.04 0.04 rg
+0. 841.8899999999999864 595.2755905511811534 -136.0629921259842661 re
+f
+0.15 0.39 0.92 rg
+0. 711.4962992125983874 595.2755905511811534 -5.6692913385826778 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+0.376 0.647 0.98 rg
+51.0236220472441033 793.7010236220472734 Td
+(AXIAVONE  ·  POLAR.SH & LEMON SQUEEZY SELLER PACK) Tj
+ET
+BT
+/F2 18 Tf
+20.6999999999999993 TL
+1. g
+51.0236220472441033 762.5199212598424765 Td
+(5 Tier-1 MVP Products — Shop Listing & Copy Pack) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.831 0.831 0.847 rg
+51.0236220472441033 737.0081102362204319 Td
+(Copy-paste each product listing below directly into Polar.sh and Lemon Squeezy.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 677.480551181102328 Td
+(PRODUCT 01  ·  TIER: FREE_LEAD  ·  $0 USD) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 657.6380314960629221 Td
+(AI & Micro-SaaS Launch Security Audit Checklist) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 630.7088976377951894 Td
+(Slug: ai-micro-saas-launch-security-audit) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 616.5356692913385359 Td
+(Deliverable File: public/downloads/ai-micro-saas-launch-security-audit.pdf) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 596.69314960629913 Td
+(Short Tagline \(Polar.sh Subtitle\):) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 582.5199212598424765 Td
+(A 48-point pre-launch security and production readiness checklist built to stop API key leaks, open RLS tables,) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 568.346692913385823 Td
+(and runaway LLM spend.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 542.8348818897636647 Td
+(Bullet Features:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 528.6616535433070112 Td
+(•  48-point security & launch audit checklist \(Markdown + Notion\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 514.4884251968503577 Td
+(•  Supabase RLS & column-revoke verification queries) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 500.3151968503936473 Td
+(•  Client bundle secret-leak grep script) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 486.1419685039369369 Td
+(•  Vercel & Cloudflare security header templates) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 460.6301574803148924 Td
+(Full Polar.sh Markdown Description:) Tj
+ET
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 437.952992125984224 Td
+(Ship Without Leaving Your Database or AI Keys Exposed) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 406.7718897637794839 Td
+(Most micro-SaaS breaches happen in the first 72 hours after launch—usually from misconfigured Supabase) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 392.5986614173227736 Td
+(policies, leaked service-role keys in client bundles, or unthrottled AI endpoints.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 360.0002362204724022 Td
+(What Is Inside) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 340.1577165354329964 Td
+(•  Supabase & Postgres Hardening: Step-by-step verification for FORCE ROW LEVEL SECURITY, anon) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 325.9844881889763428 Td
+(privilege stripping, and column-level revokes.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 308.9766141732283131 Td
+(•  Client/Server Boundary Audit: Exact checks to ensure zero secrets slip into VITE_* or NEXT_PUBLIC_*) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 294.8033858267715459 Td
+(build artifacts.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 277.7955118110235162 Td
+(•  API Rate-Limiting & Cost Caps: Practical thresholds to block automated scraping and unexpected) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 263.6222834645668627 Td
+(OpenAI/Gemini billing spikes.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 246.614409448818833 Td
+(•  Pre-Launch DNS & Headers: Ready-to-paste CSP, HSTS, and CORS rules for Vercel and Cloudflare.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 215.4333070866141497 Td
+(Built For) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 195.5907874015747439 Td
+(Indie founders, technical operators, and small product teams preparing for Tier-1 commercial traffic.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 4299
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 785.1970866141732586 Td
+(PRODUCT 02  ·  TIER: CORE_12  ·  $12 USD) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 765.3545669291338527 Td
+(Humanized B2B Cold-Outreach & Client Acquisition System) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 738.42543307086612 Td
+(Slug: humanized-b2b-cold-outreach-system) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 724.2522047244094665 Td
+(Deliverable File: public/downloads/humanized-b2b-cold-outreach-system.pdf) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 704.4096850393700606 Td
+(Short Tagline \(Polar.sh Subtitle\):) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 690.2364566929134071 Td
+(Plain-English outbound sequences, signal-based prospect qualification rubrics, and deliverability setup for US) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 676.0632283464566399 Td
+(and UK B2B founders.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 650.5514173228345953 Td
+(Bullet Features:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 636.3781889763779418 Td
+(•  14 plain-English B2B outreach & follow-up templates) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 622.2049606299212883 Td
+(•  SPF/DKIM/DMARC & inbox deliverability SOP) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 608.0317322834645211 Td
+(•  Signal-based lead scoring & qualification sheet) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 593.8585039370078675 Td
+(•  Zero-hype objection handling scripts) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 568.346692913385823 Td
+(Full Polar.sh Markdown Description:) Tj
+ET
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 545.6695275590550409 Td
+(Outbound That Reads Like a Peer—Not an Automated Drip) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 514.4884251968503577 Td
+(Enterprise and mid-market buyers in North America and the UK delete generic AI-written pitches on sight. This) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 500.3151968503936473 Td
+(operational playbook gives technical founders a repeatable, low-volume outbound system built around real) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 486.1419685039369369 Td
+(buyer triggers.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 453.5435433070865656 Td
+(What You Get) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 433.7010236220471597 Td
+(•  14 Signal-Based Email & LinkedIn Frameworks: Written in concise, zero-fluff executive English for product) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 419.5277952755905062 Td
+(launches, audits, and consulting retainers.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 402.5199212598424765 Td
+(•  Domain & Inbox Deliverability SOP: Exact SPF, DKIM, DMARC, and warm-up cadence settings to keep) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 388.3466929133857661 Td
+(primary-inbox placement above 95%.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 371.3388188976377364 Td
+(•  3-Tier Prospect Qualification Matrix: Filter out low-fit leads before sending a single message.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 354.3309448818897067 Td
+(•  Follow-Up & Objection Playbook: Calm, respectful responses for timing, budget, and incumbent-vendor) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 340.1577165354329964 Td
+(replies.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 308.9766141732283131 Td
+(Ideal For) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 289.1340944881889072 Td
+(B2B SaaS founders, technical consultants, and fractional operators booking 5–12 qualified discovery calls a) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 274.9608661417322537 Td
+(month without ad spend.) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 4109
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 785.1970866141732586 Td
+(PRODUCT 03  ·  TIER: PRO_19  ·  $19 USD) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 765.3545669291338527 Td
+(Global Checkout & Webhook Automation Kit \(Polar.sh / Lemon Squeezy\)) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 738.42543307086612 Td
+(Slug: global-checkout-webhook-automation-kit) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 724.2522047244094665 Td
+(Deliverable File: public/downloads/global-checkout-webhook-automation-kit.pdf) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 704.4096850393700606 Td
+(Short Tagline \(Polar.sh Subtitle\):) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 690.2364566929134071 Td
+(Timing-safe HMAC signature verification, atomic idempotency ledgers, and instant license provisioning for USD) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 676.0632283464566399 Td
+(global checkouts.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 650.5514173228345953 Td
+(Bullet Features:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 636.3781889763779418 Td
+(•  Timing-safe Polar.sh & Lemon Squeezy webhook verifiers) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 622.2049606299212883 Td
+(•  Atomic PostgreSQL webhook_events idempotency SQL) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 608.0317322834645211 Td
+(•  TypeScript entitlement & license provisioning handlers) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 593.8585039370078675 Td
+(•  Local signed-payload test runner) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 568.346692913385823 Td
+(Full Polar.sh Markdown Description:) Tj
+ET
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 545.6695275590550409 Td
+(Bulletproof Merchant-of-Record Billing in One Afternoon) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 514.4884251968503577 Td
+(Selling digital products globally means handling out-of-order webhook retries, replay attacks, and subscription) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 500.3151968503936473 Td
+(state transitions reliably. This kit gives you production-ready TypeScript handlers for Polar.sh and Lemon) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 486.1419685039369369 Td
+(Squeezy.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 453.5435433070865656 Td
+(Architecture Included) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 433.7010236220471597 Td
+(•  Constant-Time Signature Verification: Cryptographically verify every incoming webhook using Node) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 419.5277952755905062 Td
+(crypto.timingSafeEqual.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 402.5199212598424765 Td
+(•  PostgreSQL Idempotency Ledger: Deduplicate retried order.created and subscription.updated events so) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 388.3466929133857661 Td
+(customers are never double-provisioned.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 371.3388188976377364 Td
+(•  Entitlement & License Sync: Clean state transitions for one-time purchases, refunds, and recurring seats.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 354.3309448818897067 Td
+(•  Local Test Harness: Signed mock webhook payloads so you can verify edge cases before going live.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 323.1498425196849666 Td
+(Tax & Currency Ready) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 303.3073228346455608 Td
+(Built for USD checkouts across the US, UK, Canada, and Australia with full Merchant-of-Record support.) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 4058
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 785.1970866141732586 Td
+(PRODUCT 04  ·  TIER: PRO_19  ·  $19 USD) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 765.3545669291338527 Td
+(Zero-Leak Supabase RLS & Auth Security Boilerplate) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 738.42543307086612 Td
+(Slug: zero-leak-supabase-rls-auth-boilerplate) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 724.2522047244094665 Td
+(Deliverable File: public/downloads/zero-leak-supabase-rls-auth-boilerplate.pdf) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 704.4096850393700606 Td
+(Short Tagline \(Polar.sh Subtitle\):) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 690.2364566929134071 Td
+(Production-tested PostgreSQL Row Level Security policies, multi-tenant RBAC schemas, and automated) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 676.0632283464566399 Td
+(isolation tests for serious SaaS apps.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 650.5514173228345953 Td
+(Bullet Features:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 636.3781889763779418 Td
+(•  Complete multi-tenant Postgres schema & migrations) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 622.2049606299212883 Td
+(•  Indexed RLS policies for Owner, Admin, Member & Billing) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 608.0317322834645211 Td
+(•  25+ automated SQL tenant-isolation verification tests) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 593.8585039370078675 Td
+(•  Server vs. anon client separation reference code) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 568.346692913385823 Td
+(Full Polar.sh Markdown Description:) Tj
+ET
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 545.6695275590550409 Td
+(Database-Level Tenant Isolation You Can Prove) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 514.4884251968503577 Td
+(Relying on WHERE user_id = ... inside application routes is brittle. One overlooked endpoint exposes customer) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 500.3151968503936473 Td
+(data. This boilerplate puts tenant and role enforcement directly inside PostgreSQL.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 467.716771653543276 Td
+(Core Components) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 447.8742519685038701 Td
+(•  Multi-Tenant Schema \(orgs, memberships, invites, audit_logs\): Clean foreign-key architecture with strict) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 433.7010236220471597 Td
+(cascading and indexed lookups.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 416.69314960629913 Td
+(•  High-Speed RLS Policies: Optimized security definer helper functions that avoid recursive query) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 402.5199212598424765 Td
+(slowdowns.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 385.5120472440944468 Td
+(•  Role-Based Access Matrix: Pre-configured permissions for owner, admin, member, and readonly roles.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 368.5041732283464171 Td
+(•  Automated Isolation Test Suite: 25+ SQL verification checks confirming anonymous and) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 354.3309448818897067 Td
+(cross-organization requests return zero rows.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 323.1498425196849666 Td
+(Compatibility) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 303.3073228346455608 Td
+(Drop directly into any Next.js, Vite, or Remix application backed by Supabase PostgreSQL.) Tj
+ET
+endstream
+endobj
+11 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 12 0 R
+>>
+endobj
+12 0 obj
+<<
+/Length 4727
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 785.1970866141732586 Td
+(PRODUCT 05  ·  TIER: FLAGSHIP_29  ·  $29 USD) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 765.3545669291338527 Td
+(Autonomous Solopreneur Multi-Agent Operations Blueprint) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 738.42543307086612 Td
+(Slug: autonomous-solopreneur-multi-agent-blueprint) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.247 0.247 0.275 rg
+51.0236220472441033 724.2522047244094665 Td
+(Deliverable File: public/downloads/autonomous-solopreneur-multi-agent-blueprint.pdf) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 704.4096850393700606 Td
+(Short Tagline \(Polar.sh Subtitle\):) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 690.2364566929134071 Td
+(The complete operating architecture to run product engineering, QA, pricing, SEO, and storefront publishing) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 676.0632283464566399 Td
+(with coordinated AI agents.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 650.5514173228345953 Td
+(Bullet Features:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 636.3781889763779418 Td
+(•  Complete multi-agent division operating manual) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 622.2049606299212883 Td
+(•  Headless storefront sync API & JSON contract specs) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 608.0317322834645211 Td
+(•  QA gatekeeping rubrics & anti-slop prompt templates) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 593.8585039370078675 Td
+(•  Token budget & failure-recovery guardrails) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+59.5275590551181182 579.6852755905511003 Td
+(•  Unlimited commercial deployment license) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 554.1734645669291695 Td
+(Full Polar.sh Markdown Description:) Tj
+ET
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 531.4962992125983874 Td
+(Operate Like a 10-Person Product Studio—Solo) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 500.3151968503936473 Td
+(Random single-prompt workflows break down the moment you manage multiple products, QA gates, and live) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 486.1419685039369369 Td
+(customer storefronts. This flagship blueprint lays out the exact division-based agent architecture, JSON) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 471.9687401574802834 Td
+(contracts, and human-in-the-loop guardrails for running an automated digital product business.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 439.3703149606298552 Td
+(What Is Included) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 419.5277952755905062 Td
+(•  Division Operating Charter: Clear role boundaries across Engineering, QA Verification, Pricing &) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 405.3545669291337958 Td
+(Packaging, Social Proof, and Programmatic SEO.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 388.3466929133857661 Td
+(•  Headless Storefront Sync Protocol: Complete webhook schemas and authentication patterns to push) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 374.1734645669290558 Td
+(validated drafts straight to production without manual deploys.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 357.1655905511810261 Td
+(•  Prompt & Rubric Library: Structured evaluation prompts that reject low-quality copy, enforce brand tone,) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 342.9923622047243725 Td
+(and validate technical accuracy before publishing.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 325.9844881889763428 Td
+(•  Cost & Failure Guardrails: Token budgets, retry backoffs, and audit logging patterns to keep autonomous) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 311.8112598425195756 Td
+(runs predictable.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 280.6301574803148924 Td
+(Commercial License) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 260.7876377952754865 Td
+(Includes full rights to adapt the operating blueprint and codebase templates for your own ventures or client) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 246.614409448818833 Td
+(builds.) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R 11 0 R ]
+/Count 5
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+25 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+26 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 13 0 R
+/F2 14 0 R
+/F3 15 0 R
+/F4 16 0 R
+/F5 17 0 R
+/F6 18 0 R
+/F7 19 0 R
+/F8 20 0 R
+/F9 21 0 R
+/F10 22 0 R
+/F11 23 0 R
+/F12 24 0 R
+/F13 25 0 R
+/F14 26 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+27 0 obj
+<<
+/Producer (jsPDF 4.2.1)
+/CreationDate (D:20261120035128-00'00')
+>>
+endobj
+28 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 29
+0000000000 65535 f 
+0000022837 00000 n 
+0000024684 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004883 00000 n 
+0000005020 00000 n 
+0000009371 00000 n 
+0000009508 00000 n 
+0000013669 00000 n 
+0000013807 00000 n 
+0000017918 00000 n 
+0000018057 00000 n 
+0000022919 00000 n 
+0000023045 00000 n 
+0000023176 00000 n 
+0000023310 00000 n 
+0000023448 00000 n 
+0000023572 00000 n 
+0000023701 00000 n 
+0000023833 00000 n 
+0000023969 00000 n 
+0000024097 00000 n 
+0000024224 00000 n 
+0000024353 00000 n 
+0000024486 00000 n 
+0000024588 00000 n 
+0000024937 00000 n 
+0000025023 00000 n 
+trailer
+<<
+/Size 29
+/Root 28 0 R
+/Info 27 0 R
+/ID [ <B7B6AB543DCADE1D3FDA37B62CDF255C> <B7B6AB543DCADE1D3FDA37B62CDF255C> ]
+>>
+startxref
+25127
+%%EOF

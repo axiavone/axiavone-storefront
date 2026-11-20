@@ -9,6 +9,8 @@ import {
   type StorefrontProduct,
   type StorefrontReview,
 } from '@/lib/types';
+import ProductCover from '@/components/ProductCover';
+import SocialLinks from '@/components/SocialLinks';
 
 interface StorefrontCatalogProps {
   products: StorefrontProduct[];
@@ -91,11 +93,12 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
               United States · United Kingdom · Canada · Australia · USD Checkout
             </p>
             <h1 className="font-display text-4xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.1] [text-wrap:balance]">
-              Production software blueprints engineered for immediate commercial deployment.
+              Production-grade digital systems, micro-tools &amp; blueprints engineered for immediate commercial execution.
             </h1>
             <p className="mt-6 text-base sm:text-lg text-zinc-400 leading-relaxed max-w-2xl">
-              Battle-tested TypeScript starter architectures, PostgreSQL security matrices, and
-              idempotent billing handlers. Instant digital delivery with full commercial rights.
+              Battle-tested software architectures, autonomous AI operational playbooks, and
+              zero-leak security templates built for modern founders and engineering teams. Instant
+              digital delivery with full commercial rights.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
@@ -187,11 +190,13 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
                   className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#111113] transition-transform duration-200 hover:-translate-y-0.5 hover:border-white/20"
                 >
                   <Link href={`/products/${product.slug}`} className="block aspect-[4/3] overflow-hidden bg-[#18181B]">
-                    <img
-                      src={product.preview_image_url}
-                      alt={product.title}
-                      referrerPolicy="no-referrer"
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    <ProductCover
+                      slug={product.slug}
+                      title={product.title}
+                      tier={product.tier}
+                      priceUsd={product.price_usd}
+                      imageUrl={product.preview_image_url}
+                      className="transition-transform duration-300 group-hover:scale-[1.02]"
                     />
                   </Link>
 
@@ -215,14 +220,16 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
                       {product.tagline}
                     </p>
 
-                    <ul className="mt-5 space-y-2 border-t border-white/10 pt-4 text-xs text-zinc-300">
-                      {product.features_json.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="h-3.5 w-3.5 text-[#3B82F6] mt-0.5 shrink-0" aria-hidden="true" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {product.features_json.length > 0 && (
+                      <ul className="mt-5 space-y-2 border-t border-white/10 pt-4 text-xs text-zinc-300">
+                        {product.features_json.slice(0, 3).map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <Check className="h-3.5 w-3.5 text-[#3B82F6] mt-0.5 shrink-0" aria-hidden="true" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
 
                     <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-4">
                       <Link
@@ -334,34 +341,43 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
 
       {/* Clean Legal & Brand Footer */}
       <footer className="border-t border-white/10 bg-[#09090B]">
-        <div className="mx-auto flex max-w-6xl flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-6 py-10 text-xs text-zinc-400">
-          <div>
-            <span className="font-display font-semibold text-white">AXIAVONE</span>
-            <span className="mx-2" aria-hidden="true">·</span>
-            <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-xs text-zinc-400">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <span className="font-display font-semibold text-white">AXIAVONE</span>
+              <span className="mx-2" aria-hidden="true">·</span>
+              <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-6">
+              <button
+                type="button"
+                onClick={() => setLegalDoc('terms')}
+                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Terms of Service
+              </button>
+              <button
+                type="button"
+                onClick={() => setLegalDoc('privacy')}
+                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Privacy Policy
+              </button>
+              <button
+                type="button"
+                onClick={() => setLegalDoc('license')}
+                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Commercial License
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-6">
-            <button
-              type="button"
-              onClick={() => setLegalDoc('terms')}
-              className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-            >
-              Terms of Service
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalDoc('privacy')}
-              className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-            >
-              Privacy Policy
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalDoc('license')}
-              className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-            >
-              Commercial License
-            </button>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/[0.07] pt-6">
+            <SocialLinks />
+            <span className="text-[11px] text-zinc-500">
+              Tier-1 Digital Systems · Instant USD Checkout
+            </span>
           </div>
         </div>
       </footer>

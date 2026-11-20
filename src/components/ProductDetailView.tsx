@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Check, Code2, ShieldCheck, Star } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Check, ShieldCheck, Star } from 'lucide-react';
 import {
   TIER_LABELS,
-  type ProductDetailResponse,
   type PublicProduct,
   type PublicReview,
 } from '../types/storefront.ts';
+import { fetchPublishedProductBySlugClient } from '../lib/supabaseClient.ts';
 import { MarkdownRenderer } from './MarkdownRenderer.tsx';
+import { ProductCover } from './ProductCover.tsx';
 
 interface ProductDetailViewProps {
   slug: string;
@@ -18,29 +19,21 @@ export function ProductDetailView({ slug, onNavigateHome }: ProductDetailViewPro
   const [reviews, setReviews] = useState<PublicReview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [imgFailed, setImgFailed] = useState(false);
 
   useEffect(() => {
     let active = true;
     setLoading(true);
     setError(null);
-    setImgFailed(false);
 
-    fetch(`/api/products/${encodeURIComponent(slug)}`)
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new Error(res.status === 404 ? 'Product not found.' : 'Unable to load product.');
-        }
-        return (await res.json()) as ProductDetailResponse;
-      })
+    fetchPublishedProductBySlugClient(slug)
       .then((data) => {
         if (!active) return;
         setProduct(data.product);
         setReviews(data.reviews);
-        document.title = data.product.seo_title;
+        document.title = data.product.seo_title || `${data.product.title} | AXIAVONE`;
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) {
-          metaDesc.setAttribute('content', data.product.seo_description);
+          metaDesc.setAttribute('content', data.product.seo_description || data.product.tagline);
         }
         setLoading(false);
       })
@@ -117,26 +110,19 @@ export function ProductDetailView({ slug, onNavigateHome }: ProductDetailViewPro
           </div>
 
           <div className="aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-[#111113]">
-            {!imgFailed ? (
-              <img
-                src={product.preview_image_url}
-                alt={product.title}
-                referrerPolicy="no-referrer"
-                onError={() => setImgFailed(true)}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-[#111113] to-[#18181B] p-8 text-center">
-                <Code2 className="h-10 w-10 text-[#3B82F6] mb-3" aria-hidden="true" />
-                <span className="font-display text-sm font-medium text-zinc-300">
-                  {product.title}
-                </span>
-              </div>
-            )}
+            <ProductCover
+              slug={product.slug}
+              title={product.title}
+              tier={product.tier}
+              priceUsd={product.price_usd}
+              imageUrl={product.preview_image_url}
+            />
           </div>
 
           <div className="border-t border-white/10 pt-8">
-            <MarkdownRenderer content={product.description_md} />
+            <MarkdownRenderer
+              content={(product.description_md || '').replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n')}
+            />
           </div>
 
           <section className="border-t border-white/10 pt-8">
@@ -199,20 +185,36 @@ export function ProductDetailView({ slug, onNavigateHome }: ProductDetailViewPro
               ))}
             </ul>
 
-            <a
-              href={product.checkout_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
-            >
-              {product.price_usd === 0
-                ? 'Download Free Package'
-                : `Checkout Instantly — $${product.price_usd.toFixed(0)} USD`}
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
+            <div className="mt-8 space-y-3">
+              <a
+                href={product.checkout_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
+              >
+                {product.price_usd === 0
+                  ? 'Download Free Package (Polar.sh)'
+                  : `Pay with Card / Apple Pay — $${product.price_usd.toFixed(0)} USD`}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+
+              {product.secondary_checkout_url && (
+                <a
+                  href={product.secondary_checkout_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/15 bg-[#18181B] px-5 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-white/30 hover:text-white"
+                >
+                  {product.price_usd === 0
+                    ? 'Mirror Download (Lemon Squeezy)'
+                    : 'Pay with PayPal / Card (Lemon Squeezy)'}
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              )}
+            </div>
 
             <p className="mt-4 text-center text-xs text-zinc-400">
-              Instant delivery via Polar.sh / Lemon Squeezy · US, UK, CA & AU tax invoices included
+              Instant delivery via Polar.sh &amp; Lemon Squeezy · Card, Apple Pay, PayPal &amp; US/UK/CA/AU tax invoices supported
             </p>
           </div>
         </aside>

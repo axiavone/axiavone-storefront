@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none">
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#09090B" />
+      <stop offset="100%" stop-color="#111118" />
+    </linearGradient>
+    <radialGradient id="glow5" cx="50%" cy="42%" r="50%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.28" />
+      <stop offset="100%" stop-color="#09090B" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid5" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg5)" />
+  <rect width="1200" height="900" fill="url(#grid5)" />
+  <rect width="1200" height="900" fill="url(#glow5)" />
+
+  <!-- Flagship Operations Topology -->
+  <rect x="150" y="130" width="900" height="600" rx="16" fill="#111113" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1.5" />
+
+  <!-- Core Orchestrator Node -->
+  <rect x="440" y="190" width="320" height="92" rx="12" fill="#18181B" stroke="#3B82F6" stroke-width="1.5" />
+  <text x="480" y="230" fill="#60A5FA" font-family="monospace" font-size="13">FLAGSHIP ARCHITECTURE</text>
+  <text x="480" y="258" fill="#FAFAFA" font-family="sans-serif" font-size="20" font-weight="600">Autonomous Ops Core</text>
+
+  <!-- Branches -->
+  <path d="M600 282 V330" stroke="#3B82F6" stroke-width="2" />
+  <path d="M270 330 H930" stroke="#3B82F6" stroke-opacity="0.6" stroke-width="1.5" />
+  <line x1="270" y1="330" x2="270" y2="375" stroke="#3B82F6" stroke-opacity="0.6" stroke-width="1.5" />
+  <line x1="490" y1="330" x2="490" y2="375" stroke="#3B82F6" stroke-opacity="0.6" stroke-width="1.5" />
+  <line x1="710" y1="330" x2="710" y2="375" stroke="#3B82F6" stroke-opacity="0.6" stroke-width="1.5" />
+  <line x1="930" y1="330" x2="930" y2="375" stroke="#3B82F6" stroke-opacity="0.6" stroke-width="1.5" />
+
+  <!-- 4 Division Execution Blocks -->
+  <rect x="185" y="375" width="170" height="120" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.12" />
+  <text x="208" y="416" fill="#60A5FA" font-family="monospace" font-size="12">01 · BUILD</text>
+  <text x="208" y="446" fill="#FAFAFA" font-family="sans-serif" font-size="16" font-weight="600">Engineering</text>
+  <text x="208" y="472" fill="#71717A" font-family="monospace" font-size="11">TYPE-SAFE SPECS</text>
+
+  <rect x="405" y="375" width="170" height="120" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.12" />
+  <text x="428" y="416" fill="#60A5FA" font-family="monospace" font-size="12">02 · VERIFY</text>
+  <text x="428" y="446" fill="#FAFAFA" font-family="sans-serif" font-size="16" font-weight="600">QA Gates</text>
+  <text x="428" y="472" fill="#71717A" font-family="monospace" font-size="11">RUBRIC CHECKS</text>
+
+  <rect x="625" y="375" width="170" height="120" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.12" />
+  <text x="648" y="416" fill="#60A5FA" font-family="monospace" font-size="12">03 · PACKAGE</text>
+  <text x="648" y="446" fill="#FAFAFA" font-family="sans-serif" font-size="16" font-weight="600">Pricing &amp; Offer</text>
+  <text x="648" y="472" fill="#71717A" font-family="monospace" font-size="11">VALUE LADDER</text>
+
+  <rect x="845" y="375" width="170" height="120" rx="10" fill="#18181B" stroke="#FFFFFF" stroke-opacity="0.12" />
+  <text x="868" y="416" fill="#60A5FA" font-family="monospace" font-size="12">04 · PUBLISH</text>
+  <text x="868" y="446" fill="#FAFAFA" font-family="sans-serif" font-size="16" font-weight="600">Storefront Sync</text>
+  <text x="868" y="472" fill="#71717A" font-family="monospace" font-size="11">ZERO-LEAK API</text>
+
+  <!-- Live Sync Output Bar -->
+  <rect x="185" y="535" width="830" height="86" rx="10" fill="#18181B" stroke="#3B82F6" stroke-opacity="0.35" />
+  <text x="218" y="574" fill="#FAFAFA" font-family="monospace" font-size="14">POST /api/ai-sync  -&gt;  STOREFRONT PUBLISHED  -&gt;  POLAR.SH &amp; LEMON SQUEEZY LIVE</text>
+  <rect x="218" y="592" width="760" height="6" rx="3" fill="#27272A" />
+  <rect x="218" y="592" width="610" height="6" rx="3" fill="#2563EB" />
+
+  <text x="185" y="684" fill="#71717A" font-family="monospace" font-size="16" letter-spacing="2">AXIAVONE // AUTONOMOUS SOLOPRENEUR OPERATIONS BLUEPRINT</text>
+</svg>

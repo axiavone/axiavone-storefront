@@ -25,20 +25,37 @@ const localProducts: InternalProductRecord[] = SEED_PRODUCTS.map((p) => ({
 const localReviews: PublicReview[] = [...SEED_REVIEWS];
 
 function getSupabasePublic(): SupabaseClient | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const anonKey =
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
-  if (!url || !anonKey || url.includes('your-project-ref')) return null;
-  return createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  try {
+    const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').trim();
+    const anonKey = (
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      process.env.VITE_SUPABASE_ANON_KEY ||
+      ''
+    ).trim();
+    if (!url || !anonKey || url.includes('your-project-ref') || !url.startsWith('http')) {
+      return null;
+    }
+    return createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  } catch (err) {
+    console.error('[supabase-public] client init failed:', err);
+    return null;
+  }
 }
 
 function getSupabaseAdmin(): SupabaseClient | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceKey || url.includes('your-project-ref')) return null;
-  return createClient(url, serviceKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
+  try {
+    const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').trim();
+    const serviceKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+    if (!url || !serviceKey || url.includes('your-project-ref') || !url.startsWith('http')) {
+      return null;
+    }
+    return createClient(url, serviceKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+  } catch (err) {
+    console.error('[supabase-admin] client init failed:', err);
+    return null;
+  }
 }
 
 function toPublicProduct(record: InternalProductRecord): PublicProduct {
@@ -66,37 +83,58 @@ function isValidUrl(value: string): boolean {
   }
 }
 
+const PUBLIC_COLS =
+  'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, secondary_checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, published_at, created_at, updated_at';
+const LEGACY_COLS =
+  'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, published_at, created_at, updated_at';
+
 async function fetchPublishedCatalog(): Promise<{
   products: PublicProduct[];
   reviews: PublicReview[];
 }> {
   const supabase = getSupabasePublic();
   if (supabase) {
-    const [{ data: products, error: pErr }, { data: reviews, error: rErr }] = await Promise.all([
-      supabase
-        .from('storefront_products')
-        .select(
-          'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, published_at, created_at, updated_at'
-        )
-        .eq('status', 'published')
-        .order('price_usd', { ascending: false }),
-      supabase
-        .from('storefront_reviews')
-        .select('id, product_id, buyer_name, buyer_country, review_text, rating, is_verified, created_at')
-        .eq('is_verified', true)
-        .order('created_at', { ascending: false })
-        .limit(8),
-    ]);
+    let { data: products, error: pErr } = await supabase
+      .from('storefront_products')
+      .select(PUBLIC_COLS)
+      .eq('status', 'published')
+      .order('price_usd', { ascending: false });
 
-    if (!pErr && !rErr && products) {
+    if (pErr && pErr.message.includes('secondary_checkout_url')) {
+      const retry = await supabase
+        .from('storefront_products')
+        .select(LEGACY_COLS)
+        .eq('status', 'published')
+        .order('price_usd', { ascending: false });
+      products = retry.data as typeof products;
+      pErr = retry.error;
+    }
+
+    const { data: reviews, error: rErr } = await supabase
+      .from('storefront_reviews')
+      .select('id, product_id, buyer_name, buyer_country, review_text, rating, is_verified, created_at')
+      .eq('is_verified', true)
+      .order('created_at', { ascending: false })
+      .limit(8);
+
+    if (pErr) {
+      console.error('[storefront] Supabase storefront_products query error:', pErr.message);
+    }
+    if (rErr) {
+      console.error('[storefront] Supabase storefront_reviews query error:', rErr.message);
+    }
+
+    if (!pErr && Array.isArray(products)) {
       return {
         products: products.map((p) => ({
           ...(p as PublicProduct),
           price_usd: Number(p.price_usd),
+          secondary_checkout_url: (p as { secondary_checkout_url?: string | null }).secondary_checkout_url || null,
+          preview_image_url: p.preview_image_url || null,
           features_json: Array.isArray(p.features_json) ? p.features_json : [],
           keywords: Array.isArray(p.keywords) ? p.keywords : [],
         })),
-        reviews: (reviews ?? []) as PublicReview[],
+        reviews: !rErr && Array.isArray(reviews) ? (reviews as PublicReview[]) : [],
       };
     }
   }
@@ -119,33 +157,54 @@ async function fetchPublishedBySlug(
 ): Promise<{ product: PublicProduct; reviews: PublicReview[] } | null> {
   const supabase = getSupabasePublic();
   if (supabase) {
-    const { data: product } = await supabase
+    let { data: product, error: pErr } = await supabase
       .from('storefront_products')
-      .select(
-        'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, published_at, created_at, updated_at'
-      )
+      .select(PUBLIC_COLS)
       .eq('slug', slug)
       .eq('status', 'published')
       .maybeSingle();
 
-    if (!product) return null;
+    if (pErr && pErr.message.includes('secondary_checkout_url')) {
+      const retry = await supabase
+        .from('storefront_products')
+        .select(LEGACY_COLS)
+        .eq('slug', slug)
+        .eq('status', 'published')
+        .maybeSingle();
+      product = retry.data as typeof product;
+      pErr = retry.error;
+    }
 
-    const { data: reviews } = await supabase
-      .from('storefront_reviews')
-      .select('id, product_id, buyer_name, buyer_country, review_text, rating, is_verified, created_at')
-      .eq('product_id', product.id)
-      .eq('is_verified', true)
-      .order('created_at', { ascending: false });
+    if (pErr) {
+      console.error('[storefront] Supabase product detail query error:', pErr.message);
+    }
 
-    return {
-      product: {
-        ...(product as PublicProduct),
-        price_usd: Number(product.price_usd),
-        features_json: Array.isArray(product.features_json) ? product.features_json : [],
-        keywords: Array.isArray(product.keywords) ? product.keywords : [],
-      },
-      reviews: (reviews ?? []) as PublicReview[],
-    };
+    if (!pErr) {
+      if (!product) return null;
+
+      const { data: reviews, error: rErr } = await supabase
+        .from('storefront_reviews')
+        .select('id, product_id, buyer_name, buyer_country, review_text, rating, is_verified, created_at')
+        .eq('product_id', product.id)
+        .eq('is_verified', true)
+        .order('created_at', { ascending: false });
+
+      if (rErr) {
+        console.error('[storefront] Supabase product reviews query error:', rErr.message);
+      }
+
+      return {
+        product: {
+          ...(product as PublicProduct),
+          price_usd: Number(product.price_usd),
+          secondary_checkout_url: (product as { secondary_checkout_url?: string | null }).secondary_checkout_url || null,
+          preview_image_url: product.preview_image_url || null,
+          features_json: Array.isArray(product.features_json) ? product.features_json : [],
+          keywords: Array.isArray(product.keywords) ? product.keywords : [],
+        },
+        reviews: !rErr && Array.isArray(reviews) ? (reviews as PublicReview[]) : [],
+      };
+    }
   }
 
   const found = localProducts.find((p) => p.slug === slug && p.status === 'published');
@@ -285,17 +344,47 @@ async function startServer() {
       return;
     }
 
-    const product = body.product as Record<string, unknown> | undefined;
-    if (!product || typeof product !== 'object') {
-      res.status(422).json({ error: 'Missing required product payload.' });
-      return;
-    }
+    // Support both { action: 'upsert_product', product: { ... } } and top-level product payload
+    const product = (
+      body.product && typeof body.product === 'object' ? body.product : body
+    ) as Record<string, unknown>;
 
     const slug = typeof product.slug === 'string' ? product.slug.trim().toLowerCase() : '';
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
       res.status(422).json({ error: 'Invalid slug format. Use lowercase kebab-case.' });
       return;
     }
+
+    const parsedPrice =
+      typeof product.price_usd === 'number'
+        ? product.price_usd
+        : typeof product.price_usd === 'string' && product.price_usd.trim() !== ''
+          ? Number(product.price_usd)
+          : NaN;
+
+    const rawPreview =
+      typeof product.preview_image_url === 'string' ? product.preview_image_url.trim() : '';
+    const previewImageUrl = rawPreview ? rawPreview : null;
+
+    if (previewImageUrl && !isValidUrl(previewImageUrl)) {
+      res.status(422).json({ error: 'Invalid preview_image_url format.' });
+      return;
+    }
+
+    const checkoutUrl =
+      typeof product.checkout_url === 'string' && product.checkout_url.trim()
+        ? product.checkout_url.trim()
+        : 'https://polar.sh';
+
+    if (!isValidUrl(checkoutUrl)) {
+      res.status(422).json({ error: 'Invalid checkout_url format.' });
+      return;
+    }
+
+    const statusValue: ProductStatus =
+      typeof product.status === 'string' && VALID_STATUSES.includes(product.status as ProductStatus)
+        ? (product.status as ProductStatus)
+        : 'draft';
 
     if (
       typeof product.title !== 'string' ||
@@ -305,45 +394,63 @@ async function startServer() {
       typeof product.description_md !== 'string' ||
       !product.description_md.trim() ||
       !VALID_TIERS.includes(product.tier as ProductTier) ||
-      typeof product.price_usd !== 'number' ||
-      product.price_usd < 0 ||
-      typeof product.checkout_url !== 'string' ||
-      !isValidUrl(product.checkout_url) ||
-      typeof product.preview_image_url !== 'string' ||
-      !isValidUrl(product.preview_image_url) ||
-      !Array.isArray(product.features_json) ||
-      typeof product.seo_title !== 'string' ||
-      !product.seo_title.trim() ||
-      typeof product.seo_description !== 'string' ||
-      !product.seo_description.trim() ||
-      !VALID_STATUSES.includes(product.status as ProductStatus)
+      Number.isNaN(parsedPrice) ||
+      parsedPrice < 0
     ) {
-      res.status(422).json({ error: 'Validation failed: verify required product fields.' });
+      res.status(422).json({
+        error:
+          'Validation failed: required fields are slug, title, tagline, description_md, tier, and non-negative price_usd.',
+      });
       return;
     }
 
     const now = new Date().toISOString();
+    const title = product.title.trim();
+    const tagline = product.tagline.trim();
+    const seoTitle =
+      typeof product.seo_title === 'string' && product.seo_title.trim()
+        ? product.seo_title.trim()
+        : `${title} | AXIAVONE`;
+    const seoDescription =
+      typeof product.seo_description === 'string' && product.seo_description.trim()
+        ? product.seo_description.trim()
+        : tagline;
+
+    const rawSecondary =
+      typeof product.secondary_checkout_url === 'string'
+        ? product.secondary_checkout_url.trim()
+        : '';
+    const secondaryCheckoutUrl = rawSecondary ? rawSecondary : null;
+
+    if (secondaryCheckoutUrl && !isValidUrl(secondaryCheckoutUrl)) {
+      res.status(422).json({ error: 'Invalid secondary_checkout_url format.' });
+      return;
+    }
+
     const record = {
       slug,
-      title: product.title.trim(),
-      tagline: product.tagline.trim(),
+      title,
+      tagline,
       description_md: product.description_md,
       tier: product.tier as ProductTier,
-      price_usd: Number(product.price_usd.toFixed(2)),
-      checkout_url: product.checkout_url.trim(),
-      preview_image_url: product.preview_image_url.trim(),
-      features_json: product.features_json.map((f) => String(f).trim()).filter(Boolean),
-      seo_title: product.seo_title.trim(),
-      seo_description: product.seo_description.trim(),
+      price_usd: Number(parsedPrice.toFixed(2)),
+      checkout_url: checkoutUrl,
+      secondary_checkout_url: secondaryCheckoutUrl,
+      preview_image_url: previewImageUrl,
+      features_json: Array.isArray(product.features_json)
+        ? product.features_json.map((f) => String(f).trim()).filter(Boolean)
+        : [],
+      seo_title: seoTitle,
+      seo_description: seoDescription,
       keywords: Array.isArray(product.keywords)
         ? product.keywords.map((k) => String(k).trim()).filter(Boolean)
         : [],
-      status: product.status as ProductStatus,
+      status: statusValue,
       created_by_division:
         typeof product.created_by_division === 'string' && product.created_by_division.trim()
           ? product.created_by_division.trim()
           : 'DIV-08',
-      published_at: product.status === 'published' ? now : null,
+      published_at: statusValue === 'published' ? now : null,
     };
 
     if (adminSupabase) {
@@ -354,6 +461,7 @@ async function startServer() {
         .single();
 
       if (upsertError || !upserted) {
+        console.error('[ai-sync] Supabase upsert failed:', upsertError?.message);
         res.status(500).json({ error: 'Database upsert failed.' });
         return;
       }
@@ -383,6 +491,7 @@ async function startServer() {
       tier: record.tier,
       price_usd: record.price_usd,
       checkout_url: record.checkout_url,
+      secondary_checkout_url: record.secondary_checkout_url,
       preview_image_url: record.preview_image_url,
       features_json: record.features_json,
       seo_title: record.seo_title,

@@ -1,0 +1,450 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 5200
+>>
+stream
+0.5670000000000001 w
+0 G
+0.04 0.04 0.04 rg
+0. 841.8899999999999864 595.2755905511811534 -124.7244094488189035 re
+f
+0.15 0.39 0.92 rg
+0. 722.8348818897637784 595.2755905511811534 -5.6692913385826778 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+0.376 0.647 0.98 rg
+51.0236220472441033 796.5356692913385359 Td
+(AXIAVONE DIGITAL SYSTEMS  ·  COMMERCIAL EDITION) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+1. g
+51.0236220472441033 771.0238582677164914 Td
+(Global Checkout & Webhook Automation Kit \(Polar.sh / Lemon) Tj
+T* (Squeezy\)) Tj
+ET
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.322 0.322 0.357 rg
+51.0236220472441033 685.9844881889763428 Td
+(Tier: pro_19   |   Price: $19 USD   |   Slug: global-checkout-webhook-automation-kit) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.094 0.094 0.106 rg
+51.0236220472441033 663.3073228346456744 Td
+(Timing-safe HMAC signature verification, atomic idempotency ledgers, and instant license provisioning for) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.094 0.094 0.106 rg
+51.0236220472441033 647.7167716535432191 Td
+(USD global checkouts.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 620.7876377952754865 Td
+(Included Deliverables) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+56.6929133858267775 603.7797637795274568 Td
+([+]  Timing-safe Polar.sh & Lemon Squeezy webhook verifiers) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+56.6929133858267775 586.7718897637794271 Td
+([+]  Atomic PostgreSQL webhook_events idempotency SQL) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+56.6929133858267775 569.7640157480313974 Td
+([+]  TypeScript entitlement & license provisioning handlers) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+56.6929133858267775 552.7561417322833677 Td
+([+]  Local signed-payload test runner) Tj
+ET
+0.89 0.89 0.91 RG
+51.0236220472441033 524.4096850393700606 m
+544.2519685039370643 524.4096850393700606 l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.059 0.09 0.165 rg
+51.0236220472441033 498.8978740157479592 Td
+(Bulletproof Merchant-of-Record Billing in One Afternoon) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 467.716771653543276 Td
+(Selling digital products globally means handling out-of-order webhook retries, replay attacks, and subscription) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 453.5435433070865656 Td
+(state transitions reliably. This kit gives you production-ready TypeScript handlers for Polar.sh and Lemon) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 439.3703149606298552 Td
+(Squeezy.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 406.7718897637794839 Td
+(Architecture Included) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 386.929370078740078 Td
+(•  Constant-Time Signature Verification: Cryptographically verify every incoming webhook using Node) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 372.7561417322834245 Td
+(crypto.timingSafeEqual.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 355.7482677165353948 Td
+(•  PostgreSQL Idempotency Ledger: Deduplicate retried order.created and subscription.updated events so) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 341.5750393700786844 Td
+(customers are never double-provisioned.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 324.5671653543306547 Td
+(•  Entitlement & License Sync: Clean state transitions for one-time purchases, refunds, and recurring seats.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+62.3622047244094517 307.559291338582625 Td
+(•  Local Test Harness: Signed mock webhook payloads so you can verify edge cases before going live.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.388 0.922 rg
+51.0236220472441033 276.3781889763778281 Td
+(Tax & Currency Ready) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.153 0.153 0.165 rg
+51.0236220472441033 256.5356692913385359 Td
+(Built for USD checkouts across the US, UK, Canada, and Australia with full Merchant-of-Record support.) Tj
+ET
+0.96 0.96 0.96 rg
+51.0236220472441033 215.4333070866140929 493.2283464566929752 -96.3779527559055254 re
+f
+BT
+/F2 9.5 Tf
+10.9249999999999989 TL
+0.059 0.09 0.165 rg
+62.3622047244094517 195.5907874015747439 Td
+(Polar.sh / Storefront Metadata Reference) Tj
+ET
+BT
+/F1 8.5 Tf
+9.7749999999999986 TL
+0.247 0.247 0.275 rg
+62.3622047244094517 178.5829133858267141 Td
+(SEO Title: Global Checkout & Webhook Automation Kit \($19\) | AXIAVONE) Tj
+ET
+BT
+/F1 8.5 Tf
+9.7749999999999986 TL
+0.247 0.247 0.275 rg
+62.3622047244094517 161.5750393700786844 Td
+(SEO Desc: TypeScript webhook signature verification, Postgres idempotency ledger, and license automation for Polar.sh and) Tj
+ET
+BT
+/F1 8.5 Tf
+9.7749999999999986 TL
+0.247 0.247 0.275 rg
+62.3622047244094517 149.6695275590550409 Td
+(Lemon Squeezy checkouts.) Tj
+ET
+BT
+/F1 8.5 Tf
+9.7749999999999986 TL
+0.247 0.247 0.275 rg
+62.3622047244094517 133.2285826771652637 Td
+(Keywords: polar.sh webhook kit, lemon squeezy typescript handler, webhook idempotency postgres, global saas checkout) Tj
+ET
+BT
+/F1 8.5 Tf
+9.7749999999999986 TL
+0.247 0.247 0.275 rg
+62.3622047244094517 121.3230708661416202 Td
+(automation) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R ]
+/Count 1
+>>
+endobj
+5 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+6 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+/F3 7 0 R
+/F4 8 0 R
+/F5 9 0 R
+/F6 10 0 R
+/F7 11 0 R
+/F8 12 0 R
+/F9 13 0 R
+/F10 14 0 R
+/F11 15 0 R
+/F12 16 0 R
+/F13 17 0 R
+/F14 18 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+19 0 obj
+<<
+/Producer (jsPDF 4.2.1)
+/CreationDate (D:20261120035128-00'00')
+>>
+endobj
+20 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 21
+0000000000 65535 f 
+0000005404 00000 n 
+0000007221 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000005461 00000 n 
+0000005586 00000 n 
+0000005716 00000 n 
+0000005849 00000 n 
+0000005986 00000 n 
+0000006109 00000 n 
+0000006238 00000 n 
+0000006370 00000 n 
+0000006506 00000 n 
+0000006634 00000 n 
+0000006761 00000 n 
+0000006890 00000 n 
+0000007023 00000 n 
+0000007125 00000 n 
+0000007469 00000 n 
+0000007555 00000 n 
+trailer
+<<
+/Size 21
+/Root 20 0 R
+/Info 19 0 R
+/ID [ <C2B98A5DB2848589E5CAE0F683E17FEC> <C2B98A5DB2848589E5CAE0F683E17FEC> ]
+>>
+startxref
+7659
+%%EOF

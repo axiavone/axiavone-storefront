@@ -13,7 +13,7 @@ export default async function HomePage() {
     supabase
       .from('storefront_products')
       .select(
-        'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, status, published_at, created_at, updated_at'
+        'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, secondary_checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, status, published_at, created_at, updated_at'
       )
       .eq('status', 'published')
       .order('price_usd', { ascending: false }),
@@ -28,6 +28,7 @@ export default async function HomePage() {
   const safeProducts = ((products ?? []) as StorefrontProduct[]).map((p) => ({
     ...p,
     price_usd: Number(p.price_usd),
+    secondary_checkout_url: p.secondary_checkout_url || null,
     features_json: Array.isArray(p.features_json) ? p.features_json : [],
     keywords: Array.isArray(p.keywords) ? p.keywords : [],
   }));
