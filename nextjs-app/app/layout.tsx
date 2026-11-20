@@ -20,14 +20,24 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
+const rawGaId = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-TJMYJBQTXS').trim();
+const gaMeasurementId = /^G-[A-Z0-9]+$/i.test(rawGaId) ? rawGaId : 'G-TJMYJBQTXS';
+
+const rawGsc = (process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '').trim();
+const gscContentMatch = rawGsc.match(/content\s*=\s*["']([^"']+)["']/i);
+const gscVerificationToken = (gscContentMatch ? gscContentMatch[1] : rawGsc).trim();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://store.axiavone.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://axiavone-storefront.vercel.app'
+  ),
   title: {
     default: 'AXIAVONE — Digital Systems, Micro-Tools & Software Blueprints',
     template: '%s',
   },
   description:
     'Production-grade digital systems, micro-tools, AI operational playbooks, and software blueprints engineered for engineering teams and founders in the US, UK, Canada, and Australia.',
+  ...(gscVerificationToken ? { verification: { google: gscVerificationToken } } : {}),
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -44,6 +54,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`dark ${plusJakarta.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',${JSON.stringify(gaMeasurementId)});`,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] antialiased selection:bg-[#2563EB]/30 selection:text-white">
         {children}
       </body>

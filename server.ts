@@ -1161,8 +1161,9 @@ async function startServer() {
   app.get('/sitemap.xml', async (req: Request, res: Response) => {
     const baseUrl = (
       process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.VITE_SITE_URL ||
       process.env.APP_URL ||
-      `https://${req.get('host') || 'store.axiavone.com'}`
+      `https://${req.get('host') || 'axiavone-storefront.vercel.app'}`
     ).replace(/\/+$/, '');
 
     const { products } = await fetchPublishedCatalog();
@@ -1181,17 +1182,18 @@ async function startServer() {
     res.send(xml);
   });
 
-  // Dynamic robots.txt blocking /api/
+  // Dynamic robots.txt blocking /api/ and /admin
   app.get('/robots.txt', (req: Request, res: Response) => {
     const baseUrl = (
       process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.VITE_SITE_URL ||
       process.env.APP_URL ||
-      `https://${req.get('host') || 'store.axiavone.com'}`
+      `https://${req.get('host') || 'axiavone-storefront.vercel.app'}`
     ).replace(/\/+$/, '');
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.send(
-      `User-agent: *\nAllow: /\nAllow: /products/\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`
+      `User-agent: *\nAllow: /\nAllow: /products/\nDisallow: /admin\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`
     );
   });
 

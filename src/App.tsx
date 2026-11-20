@@ -23,6 +23,7 @@ import {
   sanitizeExternalUrl,
 } from './config/productCovers.ts';
 import { fetchPublishedCatalogClient } from './lib/supabaseClient.ts';
+import { syncRobotsAndCanonical, trackSpaPageView } from './lib/analytics.ts';
 
 const HOME_TITLE = 'AXIAVONE — Digital Systems, Micro-Tools & Software Blueprints';
 const HOME_DESCRIPTION =
@@ -70,7 +71,9 @@ export default function App() {
         .querySelector('meta[property="og:description"]')
         ?.setAttribute('content', HOME_DESCRIPTION);
     }
-  }, [activeSlug, isAdminRoute]);
+    syncRobotsAndCanonical(isAdminRoute, pathname);
+    trackSpaPageView(pathname);
+  }, [activeSlug, isAdminRoute, pathname]);
 
   const loadCatalog = () => {
     setLoading(true);

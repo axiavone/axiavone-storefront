@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /products/
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://axiavone-storefront.vercel.app/sitemap.xml
