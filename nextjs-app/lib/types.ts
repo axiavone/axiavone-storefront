@@ -1,0 +1,40 @@
+export type ProductTier = 'free_lead' | 'core_12' | 'pro_19' | 'flagship_29';
+export type ProductStatus = 'draft' | 'qa_review' | 'published' | 'archived';
+
+export interface StorefrontProduct {
+  id: string;
+  slug: string;
+  title: string;
+  tagline: string;
+  description_md: string;
+  tier: ProductTier;
+  price_usd: number;
+  checkout_url: string;
+  preview_image_url: string;
+  features_json: string[];
+  seo_title: string;
+  seo_description: string;
+  keywords: string[];
+  status: ProductStatus;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StorefrontReview {
+  id: string;
+  product_id: string;
+  buyer_name: string;
+  buyer_country: string;
+  review_text: string;
+  rating: number;
+  is_verified: boolean;
+  created_at: string;
+}
+
+export const TIER_LABELS: Record<ProductTier, string> = {
+  free_lead: 'Free Tool',
+  core_12: 'Core',
+  pro_19: 'Pro',
+  flagship_29: 'Flagship',
+};

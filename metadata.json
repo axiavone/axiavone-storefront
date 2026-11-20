@@ -1,0 +1,6 @@
+{
+  "name": "AXIAVONE — Tier-1 Digital Engineering Storefront",
+  "description": "Production-grade developer tools, SaaS architectures, and engineering blueprints built for US, UK, Canadian, and Australian software teams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
