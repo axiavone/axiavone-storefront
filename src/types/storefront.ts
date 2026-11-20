@@ -38,11 +38,30 @@ export interface ProductDetailResponse {
   reviews: PublicReview[];
 }
 
+export interface AdminProduct extends PublicProduct {
+  status: ProductStatus;
+  created_by_division: string;
+}
+
 export const TIER_LABELS: Record<ProductTier, string> = {
   free_lead: 'Free Tool',
   core_12: 'Core',
   pro_19: 'Pro',
   flagship_29: 'Flagship',
+};
+
+export const TIER_DEFAULT_PRICES: Record<ProductTier, number> = {
+  free_lead: 0,
+  core_12: 12,
+  pro_19: 19,
+  flagship_29: 29,
+};
+
+export const STATUS_LABELS: Record<ProductStatus, string> = {
+  published: 'Published',
+  draft: 'Draft',
+  qa_review: 'QA Review',
+  archived: 'Archived',
 };
 
 export const TIER_FILTERS: Array<{ id: 'all' | ProductTier; label: string }> = [

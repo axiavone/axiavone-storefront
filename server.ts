@@ -83,6 +83,132 @@ function isValidUrl(value: string): boolean {
   }
 }
 
+const ADMIN_SESSION_COOKIE = 'axiavone_admin_session';
+const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000;
+const ALLOWED_UPLOAD_MIME_EXT: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+  'image/svg+xml': 'svg',
+};
+
+function getAdminPasscode(): string {
+  return (process.env.AXIAVONE_ADMIN_PASSCODE || process.env.AXIAVONE_INTERNAL_SECRET || '').trim();
+}
+
+function verifyAdminPasscode(provided: string): boolean {
+  const expected = getAdminPasscode();
+  if (!expected || !provided) return false;
+  const a = crypto.createHash('sha256').update(provided, 'utf8').digest();
+  const b = crypto.createHash('sha256').update(expected, 'utf8').digest();
+  return crypto.timingSafeEqual(a, b);
+}
+
+function getAdminSigningKey(): Buffer {
+  return crypto
+    .createHash('sha256')
+    .update(`axiavone-admin-session:${getAdminPasscode()}`, 'utf8')
+    .digest();
+}
+
+function createAdminSessionToken(): { token: string; expiresAt: number } {
+  const expiresAt = Date.now() + ADMIN_SESSION_TTL_MS;
+  const payload = Buffer.from(
+    JSON.stringify({ exp: expiresAt, nonce: crypto.randomBytes(8).toString('hex') }),
+    'utf8'
+  ).toString('base64url');
+  const sig = crypto
+    .createHmac('sha256', getAdminSigningKey())
+    .update(payload)
+    .digest('base64url');
+  return { token: `${payload}.${sig}`, expiresAt };
+}
+
+function verifyAdminSessionToken(token: string | undefined): boolean {
+  if (!token || !getAdminPasscode()) return false;
+  const dotIdx = token.indexOf('.');
+  if (dotIdx <= 0) return false;
+  const payload = token.slice(0, dotIdx);
+  const sig = token.slice(dotIdx + 1);
+  if (!payload || !sig) return false;
+
+  const expectedSig = crypto
+    .createHmac('sha256', getAdminSigningKey())
+    .update(payload)
+    .digest('base64url');
+
+  const a = Buffer.from(sig, 'utf8');
+  const b = Buffer.from(expectedSig, 'utf8');
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
+
+  try {
+    const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as {
+      exp?: number;
+    };
+    return typeof decoded.exp === 'number' && decoded.exp > Date.now();
+  } catch {
+    return false;
+  }
+}
+
+function extractAdminToken(req: Request): string | undefined {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const bearer = authHeader.slice(7).trim();
+    if (bearer) return bearer;
+  }
+  const cookieHeader = req.headers.cookie;
+  if (!cookieHeader) return undefined;
+  const pairs = cookieHeader.split(';');
+  for (const pair of pairs) {
+    const eq = pair.indexOf('=');
+    if (eq === -1) continue;
+    const name = pair.slice(0, eq).trim();
+    if (name === ADMIN_SESSION_COOKIE) {
+      return decodeURIComponent(pair.slice(eq + 1).trim());
+    }
+  }
+  return undefined;
+}
+
+function isAdminAuthenticated(req: Request): boolean {
+  return verifyAdminSessionToken(extractAdminToken(req));
+}
+
+function normalizeAdminProductRow(row: Record<string, unknown>): InternalProductRecord {
+  return {
+    id: String(row.id),
+    slug: String(row.slug),
+    title: String(row.title),
+    tagline: String(row.tagline ?? ''),
+    description_md: String(row.description_md ?? ''),
+    tier: row.tier as ProductTier,
+    price_usd: Number(row.price_usd ?? 0),
+    checkout_url: String(row.checkout_url ?? 'https://polar.sh'),
+    secondary_checkout_url:
+      typeof row.secondary_checkout_url === 'string' && row.secondary_checkout_url.trim()
+        ? row.secondary_checkout_url.trim()
+        : null,
+    preview_image_url:
+      typeof row.preview_image_url === 'string' && row.preview_image_url.trim()
+        ? row.preview_image_url.trim()
+        : null,
+    features_json: Array.isArray(row.features_json)
+      ? row.features_json.map((f) => String(f))
+      : [],
+    seo_title: String(row.seo_title ?? row.title ?? ''),
+    seo_description: String(row.seo_description ?? row.tagline ?? ''),
+    keywords: Array.isArray(row.keywords) ? row.keywords.map((k) => String(k)) : [],
+    status: (row.status as ProductStatus) || 'draft',
+    created_by_division: String(row.created_by_division ?? 'DIV-08'),
+    published_at: String(row.published_at ?? row.created_at ?? ''),
+    created_at: String(row.created_at ?? ''),
+    updated_at: String(row.updated_at ?? ''),
+  };
+}
+
 const PUBLIC_COLS =
   'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, secondary_checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, published_at, created_at, updated_at';
 const LEGACY_COLS =
@@ -216,6 +342,7 @@ async function fetchPublishedBySlug(
 
 async function startServer() {
   const app = express();
+  app.use('/api/admin/upload', express.json({ limit: '15mb' }));
   app.use(express.json({ limit: '1mb' }));
 
   // Public read-only catalog endpoint (strictly published & verified)
@@ -243,6 +370,515 @@ async function startServer() {
     } catch {
       res.status(500).json({ error: 'Unable to load product details.' });
     }
+  });
+
+  // ---------------------------------------------------------------------------
+  // Protected Admin Endpoints (/api/admin/*)
+  // ---------------------------------------------------------------------------
+  app.get('/api/admin/auth', (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({
+      configured: Boolean(getAdminPasscode()),
+      authenticated: isAdminAuthenticated(req),
+    });
+  });
+
+  app.post('/api/admin/auth', (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (!getAdminPasscode()) {
+      res.status(503).json({
+        error: 'Admin passcode is not configured on the server (set AXIAVONE_ADMIN_PASSCODE).',
+      });
+      return;
+    }
+
+    const passcode = typeof req.body?.passcode === 'string' ? req.body.passcode.trim() : '';
+    if (!verifyAdminPasscode(passcode)) {
+      res.status(401).json({ error: 'Invalid admin passcode.' });
+      return;
+    }
+
+    const { token, expiresAt } = createAdminSessionToken();
+    const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
+    res.setHeader(
+      'Set-Cookie',
+      `${ADMIN_SESSION_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Path=/; Max-Age=${Math.floor(
+        ADMIN_SESSION_TTL_MS / 1000
+      )}; SameSite=Lax${isHttps ? '; Secure' : ''}`
+    );
+    res.json({ authenticated: true, token, expiresAt });
+  });
+
+  app.post('/api/admin/logout', (_req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader(
+      'Set-Cookie',
+      `${ADMIN_SESSION_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax`
+    );
+    res.json({ ok: true });
+  });
+
+  app.get('/api/admin/products', async (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (!isAdminAuthenticated(req)) {
+      res.status(401).json({ error: 'Unauthorized: admin login required.' });
+      return;
+    }
+
+    const adminSupabase = getSupabaseAdmin();
+    if (adminSupabase) {
+      let { data, error } = await adminSupabase
+        .from('storefront_products')
+        .select('*')
+        .order('updated_at', { ascending: false });
+
+      if (error && error.message.includes('secondary_checkout_url')) {
+        const retry = await adminSupabase
+          .from('storefront_products')
+          .select(
+            'id, slug, title, tagline, description_md, tier, price_usd, checkout_url, preview_image_url, features_json, seo_title, seo_description, keywords, status, created_by_division, published_at, created_at, updated_at'
+          )
+          .order('updated_at', { ascending: false });
+        data = retry.data as typeof data;
+        error = retry.error;
+      }
+
+      if (error) {
+        res.status(500).json({ error: `Failed to fetch products: ${error.message}` });
+        return;
+      }
+
+      const products = (data ?? []).map((row) =>
+        normalizeAdminProductRow(row as Record<string, unknown>)
+      );
+      res.json({ products });
+      return;
+    }
+
+    const sorted = [...localProducts].sort(
+      (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+    );
+    res.json({ products: sorted });
+  });
+
+  app.post('/api/admin/products', async (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (!isAdminAuthenticated(req)) {
+      res.status(401).json({ error: 'Unauthorized: admin login required.' });
+      return;
+    }
+
+    const body = (req.body || {}) as Record<string, unknown>;
+    const slug = typeof body.slug === 'string' ? body.slug.trim().toLowerCase() : '';
+    const title = typeof body.title === 'string' ? body.title.trim() : '';
+    const tagline = typeof body.tagline === 'string' ? body.tagline.trim() : '';
+    const rawDesc = typeof body.description_md === 'string' ? body.description_md.trim() : '';
+    const descriptionMd = rawDesc || tagline;
+    const tier = body.tier as ProductTier;
+    const statusValue: ProductStatus =
+      typeof body.status === 'string' && VALID_STATUSES.includes(body.status as ProductStatus)
+        ? (body.status as ProductStatus)
+        : 'draft';
+
+    const parsedPrice =
+      typeof body.price_usd === 'number'
+        ? body.price_usd
+        : typeof body.price_usd === 'string' && body.price_usd.trim() !== ''
+          ? Number(body.price_usd)
+          : NaN;
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      res.status(422).json({ error: 'Slug must use lowercase letters, numbers, and hyphens only.' });
+      return;
+    }
+    if (!title || !tagline || !VALID_TIERS.includes(tier) || Number.isNaN(parsedPrice) || parsedPrice < 0) {
+      res.status(422).json({
+        error: 'Title, slug, tagline, valid tier, and non-negative USD price are required.',
+      });
+      return;
+    }
+
+    const checkoutUrl =
+      typeof body.checkout_url === 'string' && body.checkout_url.trim()
+        ? body.checkout_url.trim()
+        : 'https://polar.sh';
+    if (!isValidUrl(checkoutUrl)) {
+      res.status(422).json({ error: 'Invalid checkout URL format.' });
+      return;
+    }
+
+    const rawSecondary =
+      typeof body.secondary_checkout_url === 'string' ? body.secondary_checkout_url.trim() : '';
+    const secondaryCheckoutUrl = rawSecondary || null;
+    if (secondaryCheckoutUrl && !isValidUrl(secondaryCheckoutUrl)) {
+      res.status(422).json({ error: 'Invalid secondary checkout URL format.' });
+      return;
+    }
+
+    const rawImage =
+      typeof body.preview_image_url === 'string'
+        ? body.preview_image_url.trim()
+        : typeof body.image_url === 'string'
+          ? body.image_url.trim()
+          : '';
+    const previewImageUrl = rawImage || null;
+    if (previewImageUrl && !isValidUrl(previewImageUrl)) {
+      res.status(422).json({ error: 'Invalid cover image URL format.' });
+      return;
+    }
+
+    const featuresJson = Array.isArray(body.features_json)
+      ? body.features_json.map((f) => String(f).trim()).filter(Boolean)
+      : [];
+    const now = new Date().toISOString();
+
+    const record = {
+      slug,
+      title,
+      tagline,
+      description_md: descriptionMd,
+      tier,
+      price_usd: Number(parsedPrice.toFixed(2)),
+      checkout_url: checkoutUrl,
+      secondary_checkout_url: secondaryCheckoutUrl,
+      preview_image_url: previewImageUrl,
+      features_json: featuresJson,
+      seo_title:
+        typeof body.seo_title === 'string' && body.seo_title.trim()
+          ? body.seo_title.trim()
+          : `${title} | AXIAVONE`,
+      seo_description:
+        typeof body.seo_description === 'string' && body.seo_description.trim()
+          ? body.seo_description.trim()
+          : tagline,
+      keywords: Array.isArray(body.keywords)
+        ? body.keywords.map((k) => String(k).trim()).filter(Boolean)
+        : [],
+      status: statusValue,
+      created_by_division: 'ADMIN',
+      published_at: statusValue === 'published' ? now : null,
+    };
+
+    const adminSupabase = getSupabaseAdmin();
+    if (adminSupabase) {
+      const { data, error } = await adminSupabase
+        .from('storefront_products')
+        .insert(record)
+        .select('*')
+        .single();
+
+      if (error) {
+        const statusCode = error.code === '23505' ? 409 : 500;
+        res.status(statusCode).json({
+          error:
+            error.code === '23505'
+              ? `A product with slug "${slug}" already exists.`
+              : `Failed to create product: ${error.message}`,
+        });
+        return;
+      }
+
+      res.status(201).json({ product: normalizeAdminProductRow(data as Record<string, unknown>) });
+      return;
+    }
+
+    if (localProducts.some((p) => p.slug === slug)) {
+      res.status(409).json({ error: `A product with slug "${slug}" already exists.` });
+      return;
+    }
+    const created: InternalProductRecord = {
+      ...record,
+      id: crypto.randomUUID(),
+      published_at: record.published_at || now,
+      created_at: now,
+      updated_at: now,
+    };
+    localProducts.unshift(created);
+    res.status(201).json({ product: created });
+  });
+
+  app.patch('/api/admin/products/:id', async (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (!isAdminAuthenticated(req)) {
+      res.status(401).json({ error: 'Unauthorized: admin login required.' });
+      return;
+    }
+
+    const id = String(req.params.id || '').trim();
+    if (!id) {
+      res.status(400).json({ error: 'Missing product ID.' });
+      return;
+    }
+
+    const body = (req.body || {}) as Record<string, unknown>;
+    const slug = typeof body.slug === 'string' ? body.slug.trim().toLowerCase() : '';
+    const title = typeof body.title === 'string' ? body.title.trim() : '';
+    const tagline = typeof body.tagline === 'string' ? body.tagline.trim() : '';
+    const rawDesc = typeof body.description_md === 'string' ? body.description_md.trim() : '';
+    const descriptionMd = rawDesc || tagline;
+    const tier = body.tier as ProductTier;
+    const statusValue: ProductStatus =
+      typeof body.status === 'string' && VALID_STATUSES.includes(body.status as ProductStatus)
+        ? (body.status as ProductStatus)
+        : 'draft';
+
+    const parsedPrice =
+      typeof body.price_usd === 'number'
+        ? body.price_usd
+        : typeof body.price_usd === 'string' && body.price_usd.trim() !== ''
+          ? Number(body.price_usd)
+          : NaN;
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      res.status(422).json({ error: 'Slug must use lowercase letters, numbers, and hyphens only.' });
+      return;
+    }
+    if (!title || !tagline || !VALID_TIERS.includes(tier) || Number.isNaN(parsedPrice) || parsedPrice < 0) {
+      res.status(422).json({
+        error: 'Title, slug, tagline, valid tier, and non-negative USD price are required.',
+      });
+      return;
+    }
+
+    const checkoutUrl =
+      typeof body.checkout_url === 'string' && body.checkout_url.trim()
+        ? body.checkout_url.trim()
+        : 'https://polar.sh';
+    if (!isValidUrl(checkoutUrl)) {
+      res.status(422).json({ error: 'Invalid checkout URL format.' });
+      return;
+    }
+
+    const rawSecondary =
+      typeof body.secondary_checkout_url === 'string' ? body.secondary_checkout_url.trim() : '';
+    const secondaryCheckoutUrl = rawSecondary || null;
+    if (secondaryCheckoutUrl && !isValidUrl(secondaryCheckoutUrl)) {
+      res.status(422).json({ error: 'Invalid secondary checkout URL format.' });
+      return;
+    }
+
+    const rawImage =
+      typeof body.preview_image_url === 'string'
+        ? body.preview_image_url.trim()
+        : typeof body.image_url === 'string'
+          ? body.image_url.trim()
+          : '';
+    const previewImageUrl = rawImage || null;
+    if (previewImageUrl && !isValidUrl(previewImageUrl)) {
+      res.status(422).json({ error: 'Invalid cover image URL format.' });
+      return;
+    }
+
+    const featuresJson = Array.isArray(body.features_json)
+      ? body.features_json.map((f) => String(f).trim()).filter(Boolean)
+      : [];
+
+    const updates: Record<string, unknown> = {
+      slug,
+      title,
+      tagline,
+      description_md: descriptionMd,
+      tier,
+      price_usd: Number(parsedPrice.toFixed(2)),
+      checkout_url: checkoutUrl,
+      secondary_checkout_url: secondaryCheckoutUrl,
+      preview_image_url: previewImageUrl,
+      features_json: featuresJson,
+      seo_title:
+        typeof body.seo_title === 'string' && body.seo_title.trim()
+          ? body.seo_title.trim()
+          : `${title} | AXIAVONE`,
+      seo_description:
+        typeof body.seo_description === 'string' && body.seo_description.trim()
+          ? body.seo_description.trim()
+          : tagline,
+      status: statusValue,
+      updated_at: new Date().toISOString(),
+    };
+
+    const adminSupabase = getSupabaseAdmin();
+    if (adminSupabase) {
+      const { data: existing } = await adminSupabase
+        .from('storefront_products')
+        .select('published_at')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (statusValue === 'published' && !existing?.published_at) {
+        updates.published_at = new Date().toISOString();
+      }
+
+      const { data, error } = await adminSupabase
+        .from('storefront_products')
+        .update(updates)
+        .eq('id', id)
+        .select('*')
+        .single();
+
+      if (error || !data) {
+        const statusCode = error?.code === '23505' ? 409 : 500;
+        res.status(statusCode).json({
+          error:
+            error?.code === '23505'
+              ? `Slug "${slug}" is already used by another product.`
+              : `Failed to update product: ${error?.message || 'Not found'}`,
+        });
+        return;
+      }
+
+      res.json({ product: normalizeAdminProductRow(data as Record<string, unknown>) });
+      return;
+    }
+
+    const idx = localProducts.findIndex((p) => p.id === id);
+    if (idx < 0) {
+      res.status(404).json({ error: 'Product not found.' });
+      return;
+    }
+    if (localProducts.some((p, i) => i !== idx && p.slug === slug)) {
+      res.status(409).json({ error: `Slug "${slug}" is already used by another product.` });
+      return;
+    }
+
+    localProducts[idx] = {
+      ...localProducts[idx],
+      ...(updates as Partial<InternalProductRecord>),
+    };
+    res.json({ product: localProducts[idx] });
+  });
+
+  app.delete('/api/admin/products/:id', async (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (!isAdminAuthenticated(req)) {
+      res.status(401).json({ error: 'Unauthorized: admin login required.' });
+      return;
+    }
+
+    const id = String(req.params.id || '').trim();
+    if (!id) {
+      res.status(400).json({ error: 'Missing product ID.' });
+      return;
+    }
+
+    const adminSupabase = getSupabaseAdmin();
+    if (adminSupabase) {
+      const { data, error } = await adminSupabase
+        .from('storefront_products')
+        .delete()
+        .eq('id', id)
+        .select('id, slug, title')
+        .maybeSingle();
+
+      if (error) {
+        res.status(500).json({ error: `Failed to delete product: ${error.message}` });
+        return;
+      }
+      if (!data) {
+        res.status(404).json({ error: 'Product not found.' });
+        return;
+      }
+
+      res.json({ ok: true, deleted: data });
+      return;
+    }
+
+    const idx = localProducts.findIndex((p) => p.id === id);
+    if (idx < 0) {
+      res.status(404).json({ error: 'Product not found.' });
+      return;
+    }
+    const [removed] = localProducts.splice(idx, 1);
+    res.json({ ok: true, deleted: { id: removed.id, slug: removed.slug, title: removed.title } });
+  });
+
+  app.post('/api/admin/upload', async (req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (!isAdminAuthenticated(req)) {
+      res.status(401).json({ error: 'Unauthorized: admin login required.' });
+      return;
+    }
+
+    const body = (req.body || {}) as Record<string, unknown>;
+    const rawMime = typeof body.contentType === 'string' ? body.contentType.toLowerCase().trim() : '';
+    const ext = ALLOWED_UPLOAD_MIME_EXT[rawMime];
+    if (!ext) {
+      res.status(422).json({
+        error: 'Unsupported image format. Please choose PNG, JPG, WebP, GIF, or SVG.',
+      });
+      return;
+    }
+
+    const rawBase64 = typeof body.base64 === 'string' ? body.base64.trim() : '';
+    const cleanBase64 = rawBase64.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
+    if (!cleanBase64) {
+      res.status(422).json({ error: 'Missing image payload.' });
+      return;
+    }
+
+    const buffer = Buffer.from(cleanBase64, 'base64');
+    if (buffer.length === 0 || buffer.length > 10 * 1024 * 1024) {
+      res.status(422).json({ error: 'Image file must be non-empty and under 10 MB.' });
+      return;
+    }
+
+    const rawSlug = typeof body.slug === 'string' ? body.slug : 'cover';
+    const safePrefix = rawSlug
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 48) || 'cover';
+    const filePath = `${safePrefix}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}.${ext}`;
+
+    const adminSupabase = getSupabaseAdmin();
+    if (adminSupabase) {
+      const bucketName = 'product-covers';
+      const { error: bucketCheckError } = await adminSupabase.storage.getBucket(bucketName);
+      if (bucketCheckError) {
+        const { error: createErr } = await adminSupabase.storage.createBucket(bucketName, {
+          public: true,
+          fileSizeLimit: 10 * 1024 * 1024,
+          allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'],
+        });
+        if (createErr && !createErr.message.toLowerCase().includes('already exists')) {
+          res.status(500).json({
+            error: `Could not prepare storage bucket "${bucketName}": ${createErr.message}`,
+          });
+          return;
+        }
+      }
+
+      const { error: uploadErr } = await adminSupabase.storage
+        .from(bucketName)
+        .upload(filePath, buffer, {
+          contentType: rawMime === 'image/jpg' ? 'image/jpeg' : rawMime,
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      if (uploadErr) {
+        res.status(500).json({ error: `Storage upload failed: ${uploadErr.message}` });
+        return;
+      }
+
+      const { data: publicData } = adminSupabase.storage.from(bucketName).getPublicUrl(filePath);
+      res.status(201).json({
+        ok: true,
+        url: publicData.publicUrl,
+        path: filePath,
+        bucket: bucketName,
+      });
+      return;
+    }
+
+    const uploadDir = path.resolve(process.cwd(), 'public', 'uploads', 'product-covers');
+    fs.mkdirSync(uploadDir, { recursive: true });
+    fs.writeFileSync(path.join(uploadDir, filePath), buffer);
+    res.status(201).json({
+      ok: true,
+      url: `/uploads/product-covers/${filePath}`,
+      path: filePath,
+      bucket: 'local',
+    });
   });
 
   // Protected AI Division Sync endpoint

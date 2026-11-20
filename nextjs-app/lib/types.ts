@@ -39,3 +39,17 @@ export const TIER_LABELS: Record<ProductTier, string> = {
   pro_19: 'Pro',
   flagship_29: 'Flagship',
 };
+
+export const TIER_DEFAULT_PRICES: Record<ProductTier, number> = {
+  free_lead: 0,
+  core_12: 12,
+  pro_19: 19,
+  flagship_29: 29,
+};
+
+export const STATUS_LABELS: Record<ProductStatus, string> = {
+  published: 'Published',
+  draft: 'Draft',
+  qa_review: 'QA Review',
+  archived: 'Archived',
+};

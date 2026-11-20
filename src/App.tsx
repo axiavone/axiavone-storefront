@@ -12,6 +12,7 @@ import {
   type PublicProduct,
   type PublicReview,
 } from './types/storefront.ts';
+import { AdminPanel } from './components/AdminPanel.tsx';
 import { LegalModal, type LegalDocType } from './components/LegalModal.tsx';
 import { ProductCover } from './components/ProductCover.tsx';
 import { ProductDetailView } from './components/ProductDetailView.tsx';
@@ -46,6 +47,7 @@ export default function App() {
   const [selectedTier, setSelectedTier] = useState<'all' | ProductTier>('all');
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
 
+  const isAdminRoute = useMemo(() => /^\/admin\/?$/.test(pathname), [pathname]);
   const activeSlug = useMemo(() => getSlugFromPath(pathname), [pathname]);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!activeSlug) {
+    if (!activeSlug && !isAdminRoute) {
       document.title = HOME_TITLE;
       document
         .querySelector('meta[name="description"]')
@@ -68,7 +70,7 @@ export default function App() {
         .querySelector('meta[property="og:description"]')
         ?.setAttribute('content', HOME_DESCRIPTION);
     }
-  }, [activeSlug]);
+  }, [activeSlug, isAdminRoute]);
 
   const loadCatalog = () => {
     setLoading(true);
@@ -112,6 +114,17 @@ export default function App() {
     if (selectedTier === 'all') return products;
     return products.filter((item) => item.tier === selectedTier);
   }, [products, selectedTier]);
+
+  if (isAdminRoute) {
+    return (
+      <AdminPanel
+        onNavigateHome={() => {
+          navigateTo('/');
+          loadCatalog();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#09090B] text-[#FAFAFA] flex flex-col">
