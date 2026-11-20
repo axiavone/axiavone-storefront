@@ -7,6 +7,11 @@ import { createPublicSupabaseClient } from '@/lib/supabase';
 import { TIER_LABELS, type StorefrontProduct, type StorefrontReview } from '@/lib/types';
 import ProductCover from '@/components/ProductCover';
 import SocialLinks from '@/components/SocialLinks';
+import {
+  AXIAVONE_LOGO_URL,
+  formatUsdPrice,
+  sanitizeExternalUrl,
+} from '@/config/productCovers';
 
 export const revalidate = 60;
 
@@ -107,9 +112,18 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-8 px-6">
           <Link
             href="/"
-            className="font-display text-lg font-bold tracking-tight text-white whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-2.5 whitespace-nowrap shrink-0 group"
           >
-            AXIAVONE
+            <span className="h-9 w-9 overflow-hidden rounded-lg border border-white/15 bg-[#0D1117] shrink-0">
+              <img
+                src={AXIAVONE_LOGO_URL}
+                alt="AXIAVONE logo"
+                className="h-full w-full object-cover object-[50%_20%] scale-[1.55]"
+              />
+            </span>
+            <span className="font-display text-lg font-bold tracking-tight text-white group-hover:text-[#60A5FA] transition-colors">
+              AXIAVONE
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-400">
@@ -126,12 +140,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href={product.checkout_url}
+              href={sanitizeExternalUrl(product.checkout_url)}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg bg-[#2563EB] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1D4ED8] whitespace-nowrap shrink-0"
             >
-              {product.price_usd === 0 ? 'Download Free' : `Buy — $${product.price_usd.toFixed(0)}`}
+              {product.price_usd === 0 ? 'Download Free' : `Buy — ${formatUsdPrice(product.price_usd)}`}
             </a>
           </div>
         </div>
@@ -169,8 +183,37 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               />
             </div>
 
-            <article className="prose prose-invert prose-zinc max-w-none border-t border-white/10 pt-8 prose-headings:font-display prose-headings:tracking-tight prose-a:text-[#60A5FA] prose-code:font-mono prose-code:text-zinc-200">
-              <ReactMarkdown>
+            <article className="space-y-4 border-t border-white/10 pt-8 text-[15px] leading-relaxed text-zinc-300">
+              <ReactMarkdown
+                components={{
+                  h2: ({ children }) => (
+                    <h2 className="font-display text-2xl font-semibold tracking-tight text-white pt-4 pb-1 [text-wrap:balance]">
+                      {children}
+                    </h2>
+                  ),
+                  h3: ({ children }) => (
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-white pt-3 pb-1">
+                      {children}
+                    </h3>
+                  ),
+                  p: ({ children }) => <p className="text-zinc-300 leading-7">{children}</p>,
+                  ul: ({ children }) => (
+                    <ul className="space-y-2.5 pl-5 list-disc marker:text-[#3B82F6]">{children}</ul>
+                  ),
+                  ol: ({ children }) => (
+                    <ol className="space-y-2.5 pl-5 list-decimal marker:text-zinc-400 marker:font-mono">
+                      {children}
+                    </ol>
+                  ),
+                  li: ({ children }) => <li className="text-zinc-300 leading-relaxed">{children}</li>,
+                  strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
+                  code: ({ children }) => (
+                    <code className="rounded bg-[#18181B] px-1.5 py-0.5 font-mono text-[13px] text-zinc-100 border border-white/10">
+                      {children}
+                    </code>
+                  ),
+                }}
+              >
                 {(product.description_md || '').replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n')}
               </ReactMarkdown>
             </article>
@@ -221,7 +264,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 <div>
                   <div className="text-xs text-zinc-400">{TIER_LABELS[product.tier]} License</div>
                   <div className="mt-1 font-mono text-3xl font-semibold text-white tabular-nums">
-                    {product.price_usd === 0 ? '$0' : `$${product.price_usd.toFixed(0)}`}
+                    {product.price_usd === 0 ? '$0' : formatUsdPrice(product.price_usd)}
                     <span className="ml-1.5 text-sm font-normal text-zinc-400">USD</span>
                   </div>
                 </div>
@@ -239,20 +282,20 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
               <div className="mt-8 space-y-3">
                 <a
-                  href={product.checkout_url}
+                  href={sanitizeExternalUrl(product.checkout_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
                 >
                   {product.price_usd === 0
                     ? 'Download Free Package (Polar.sh)'
-                    : `Pay with Card / Apple Pay — $${product.price_usd.toFixed(0)} USD`}
+                    : `Pay with Card / Apple Pay — ${formatUsdPrice(product.price_usd)} USD`}
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
 
                 {product.secondary_checkout_url && (
                   <a
-                    href={product.secondary_checkout_url}
+                    href={sanitizeExternalUrl(product.secondary_checkout_url, 'https://lemonsqueezy.com')}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/15 bg-[#18181B] px-5 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-white/30 hover:text-white"
@@ -275,10 +318,17 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
       <footer className="border-t border-white/10 bg-[#09090B]">
         <div className="mx-auto flex max-w-6xl flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-8 text-xs text-zinc-400">
-          <div>
-            <span className="font-display font-semibold text-white">AXIAVONE</span>
-            <span className="mx-2" aria-hidden="true">·</span>
-            <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+          <div className="flex items-center gap-3">
+            <img
+              src={AXIAVONE_LOGO_URL}
+              alt="AXIAVONE"
+              className="h-9 w-9 rounded-lg border border-white/10 object-cover shrink-0"
+            />
+            <div>
+              <span className="font-display font-semibold text-white">AXIAVONE</span>
+              <span className="mx-2" aria-hidden="true">·</span>
+              <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+            </div>
           </div>
           <SocialLinks />
         </div>

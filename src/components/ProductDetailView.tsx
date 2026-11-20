@@ -6,6 +6,7 @@ import {
   type PublicReview,
 } from '../types/storefront.ts';
 import { fetchPublishedProductBySlugClient } from '../lib/supabaseClient.ts';
+import { formatUsdPrice, sanitizeExternalUrl } from '../config/productCovers.ts';
 import { MarkdownRenderer } from './MarkdownRenderer.tsx';
 import { ProductCover } from './ProductCover.tsx';
 
@@ -30,11 +31,12 @@ export function ProductDetailView({ slug, onNavigateHome }: ProductDetailViewPro
         if (!active) return;
         setProduct(data.product);
         setReviews(data.reviews);
-        document.title = data.product.seo_title || `${data.product.title} | AXIAVONE`;
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) {
-          metaDesc.setAttribute('content', data.product.seo_description || data.product.tagline);
-        }
+        const pageTitle = data.product.seo_title || `${data.product.title} | AXIAVONE`;
+        const pageDesc = data.product.seo_description || data.product.tagline;
+        document.title = pageTitle;
+        document.querySelector('meta[name="description"]')?.setAttribute('content', pageDesc);
+        document.querySelector('meta[property="og:title"]')?.setAttribute('content', pageTitle);
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', pageDesc);
         setLoading(false);
       })
       .catch((err: Error) => {
@@ -169,7 +171,7 @@ export function ProductDetailView({ slug, onNavigateHome }: ProductDetailViewPro
               <div>
                 <div className="text-xs text-zinc-400">{TIER_LABELS[product.tier]} License</div>
                 <div className="mt-1 font-mono text-3xl font-semibold text-white tabular-nums">
-                  {product.price_usd === 0 ? '$0' : `$${product.price_usd.toFixed(0)}`}
+                  {product.price_usd === 0 ? '$0' : formatUsdPrice(product.price_usd)}
                   <span className="ml-1.5 text-sm font-normal text-zinc-400">USD</span>
                 </div>
               </div>
@@ -187,20 +189,20 @@ export function ProductDetailView({ slug, onNavigateHome }: ProductDetailViewPro
 
             <div className="mt-8 space-y-3">
               <a
-                href={product.checkout_url}
+                href={sanitizeExternalUrl(product.checkout_url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
               >
                 {product.price_usd === 0
                   ? 'Download Free Package (Polar.sh)'
-                  : `Pay with Card / Apple Pay — $${product.price_usd.toFixed(0)} USD`}
+                  : `Pay with Card / Apple Pay — ${formatUsdPrice(product.price_usd)} USD`}
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
 
               {product.secondary_checkout_url && (
                 <a
-                  href={product.secondary_checkout_url}
+                  href={sanitizeExternalUrl(product.secondary_checkout_url, 'https://lemonsqueezy.com')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/15 bg-[#18181B] px-5 py-3 text-sm font-medium text-zinc-200 transition-colors hover:border-white/30 hover:text-white"

@@ -16,11 +16,25 @@ import { LegalModal, type LegalDocType } from './components/LegalModal.tsx';
 import { ProductCover } from './components/ProductCover.tsx';
 import { ProductDetailView } from './components/ProductDetailView.tsx';
 import { SocialLinks } from './components/SocialLinks.tsx';
+import {
+  AXIAVONE_LOGO_URL,
+  formatUsdPrice,
+  sanitizeExternalUrl,
+} from './config/productCovers.ts';
 import { fetchPublishedCatalogClient } from './lib/supabaseClient.ts';
+
+const HOME_TITLE = 'AXIAVONE — Digital Systems, Micro-Tools & Software Blueprints';
+const HOME_DESCRIPTION =
+  'Production-grade digital systems, micro-tools, AI operational playbooks, and software blueprints engineered for immediate commercial execution.';
 
 function getSlugFromPath(pathname: string): string | null {
   const match = pathname.match(/^\/products\/([^/]+)\/?$/);
-  return match ? decodeURIComponent(match[1]) : null;
+  if (!match) return null;
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return null;
+  }
 }
 
 export default function App() {
@@ -35,14 +49,24 @@ export default function App() {
   const activeSlug = useMemo(() => getSlugFromPath(pathname), [pathname]);
 
   useEffect(() => {
-    const onPopState = () => setPathname(window.location.pathname);
+    const onPopState = () => {
+      setPathname(window.location.pathname);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   useEffect(() => {
     if (!activeSlug) {
-      document.title = 'AXIAVONE — Digital Systems, Micro-Tools & Software Blueprints';
+      document.title = HOME_TITLE;
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute('content', HOME_DESCRIPTION);
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', HOME_TITLE);
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute('content', HOME_DESCRIPTION);
     }
   }, [activeSlug]);
 
@@ -100,9 +124,18 @@ export default function App() {
               e.preventDefault();
               navigateTo('/');
             }}
-            className="font-display text-lg font-bold tracking-tight text-white whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-2.5 whitespace-nowrap shrink-0 group"
           >
-            AXIAVONE
+            <span className="h-9 w-9 overflow-hidden rounded-lg border border-white/15 bg-[#0D1117] shrink-0">
+              <img
+                src={AXIAVONE_LOGO_URL}
+                alt="AXIAVONE logo"
+                className="h-full w-full object-cover object-[50%_20%] scale-[1.55]"
+              />
+            </span>
+            <span className="font-display text-lg font-bold tracking-tight text-white group-hover:text-[#60A5FA] transition-colors">
+              AXIAVONE
+            </span>
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-400">
@@ -312,7 +345,7 @@ export default function App() {
                           <span className="font-mono text-base font-semibold text-white tabular-nums shrink-0">
                             {product.price_usd === 0
                               ? 'Free'
-                              : `$${product.price_usd.toFixed(0)} USD`}
+                              : `${formatUsdPrice(product.price_usd)} USD`}
                           </span>
                         </div>
 
@@ -359,14 +392,14 @@ export default function App() {
                             Read Specification
                           </a>
                           <a
-                            href={product.checkout_url}
+                            href={sanitizeExternalUrl(product.checkout_url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 rounded-lg bg-[#2563EB] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1D4ED8] whitespace-nowrap shrink-0"
                           >
                             {product.price_usd === 0
                               ? 'Get Free Kit'
-                              : `Buy Now — $${product.price_usd.toFixed(0)}`}
+                              : `Buy Now — ${formatUsdPrice(product.price_usd)}`}
                             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                           </a>
                         </div>
@@ -465,14 +498,21 @@ export default function App() {
       <footer className="border-t border-white/10 bg-[#09090B]">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-xs text-zinc-400">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-              <span className="font-display font-semibold text-white">AXIAVONE</span>
-              <span className="mx-2" aria-hidden="true">
-                ·
-              </span>
-              <span>
-                © {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.
-              </span>
+            <div className="flex items-center gap-3">
+              <img
+                src={AXIAVONE_LOGO_URL}
+                alt="AXIAVONE"
+                className="h-9 w-9 rounded-lg border border-white/10 object-cover shrink-0"
+              />
+              <div>
+                <span className="font-display font-semibold text-white">AXIAVONE</span>
+                <span className="mx-2" aria-hidden="true">
+                  ·
+                </span>
+                <span>
+                  © {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.
+                </span>
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-6">
               <button

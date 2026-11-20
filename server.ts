@@ -559,6 +559,11 @@ async function startServer() {
     );
   });
 
+  // Return structured 404 JSON for any unknown /api/* path
+  app.all('/api/*', (_req: Request, res: Response) => {
+    res.status(404).json({ error: 'API endpoint not found.' });
+  });
+
   const isProduction = process.env.NODE_ENV === 'production';
 
   if (!isProduction) {

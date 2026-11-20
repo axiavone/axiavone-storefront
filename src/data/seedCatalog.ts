@@ -23,7 +23,7 @@ Includes full rights to adapt the operating blueprint and codebase templates for
     price_usd: 29,
     checkout_url: 'https://polar.sh',
     secondary_checkout_url: 'https://lemonsqueezy.com',
-    preview_image_url: '/images/products/autonomous-solopreneur-multi-agent-blueprint.svg',
+    preview_image_url: '/assets/aistudio/105373_1d2fee46.jpg',
     features_json: [
       'Complete multi-agent division operating manual',
       'Headless storefront sync API & JSON contract specs',
@@ -66,7 +66,7 @@ Built for USD checkouts across the US, UK, Canada, and Australia with full Merch
     price_usd: 19,
     checkout_url: 'https://polar.sh',
     secondary_checkout_url: 'https://lemonsqueezy.com',
-    preview_image_url: '/images/products/global-checkout-webhook-automation-kit.svg',
+    preview_image_url: '/assets/aistudio/105371_8472fba0.jpg',
     features_json: [
       'Timing-safe Polar.sh & Lemon Squeezy webhook verifiers',
       'Atomic PostgreSQL webhook_events idempotency SQL',
@@ -108,7 +108,7 @@ Drop directly into any Next.js, Vite, or Remix application backed by Supabase Po
     price_usd: 19,
     checkout_url: 'https://polar.sh',
     secondary_checkout_url: 'https://lemonsqueezy.com',
-    preview_image_url: '/images/products/zero-leak-supabase-rls-auth-boilerplate.svg',
+    preview_image_url: '/assets/aistudio/105369_c4248328.jpg',
     features_json: [
       'Complete multi-tenant Postgres schema & migrations',
       'Indexed RLS policies for Owner, Admin, Member & Billing',
@@ -150,7 +150,7 @@ B2B SaaS founders, technical consultants, and fractional operators booking 5–1
     price_usd: 12,
     checkout_url: 'https://polar.sh',
     secondary_checkout_url: 'https://lemonsqueezy.com',
-    preview_image_url: '/images/products/humanized-b2b-cold-outreach-system.svg',
+    preview_image_url: '/assets/aistudio/105367_b4d4a9b1.jpg',
     features_json: [
       '14 plain-English B2B outreach & follow-up templates',
       'SPF/DKIM/DMARC & inbox deliverability SOP',
@@ -192,7 +192,7 @@ Indie founders, technical operators, and small product teams preparing for Tier-
     price_usd: 0,
     checkout_url: 'https://polar.sh',
     secondary_checkout_url: null,
-    preview_image_url: '/images/products/ai-micro-saas-launch-security-audit.svg',
+    preview_image_url: '/assets/aistudio/105378_63d7123b.jpg',
     features_json: [
       '48-point security & launch audit checklist (Markdown + Notion)',
       'Supabase RLS & column-revoke verification queries',

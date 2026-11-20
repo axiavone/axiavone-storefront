@@ -11,6 +11,11 @@ import {
 } from '@/lib/types';
 import ProductCover from '@/components/ProductCover';
 import SocialLinks from '@/components/SocialLinks';
+import {
+  AXIAVONE_LOGO_URL,
+  formatUsdPrice,
+  sanitizeExternalUrl,
+} from '@/config/productCovers';
 
 interface StorefrontCatalogProps {
   products: StorefrontProduct[];
@@ -41,9 +46,18 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-8 px-6">
           <Link
             href="/"
-            className="font-display text-lg font-bold tracking-tight text-white whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-2.5 whitespace-nowrap shrink-0 group"
           >
-            AXIAVONE
+            <span className="h-9 w-9 overflow-hidden rounded-lg border border-white/15 bg-[#0D1117] shrink-0">
+              <img
+                src={AXIAVONE_LOGO_URL}
+                alt="AXIAVONE logo"
+                className="h-full w-full object-cover object-[50%_20%] scale-[1.55]"
+              />
+            </span>
+            <span className="font-display text-lg font-bold tracking-tight text-white group-hover:text-[#60A5FA] transition-colors">
+              AXIAVONE
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-400">
@@ -206,7 +220,7 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
                         {TIER_LABELS[product.tier]} · Instant Download · Commercial License
                       </span>
                       <span className="font-mono text-base font-semibold text-white tabular-nums shrink-0">
-                        {product.price_usd === 0 ? 'Free' : `$${product.price_usd.toFixed(0)} USD`}
+                        {product.price_usd === 0 ? 'Free' : `${formatUsdPrice(product.price_usd)} USD`}
                       </span>
                     </div>
 
@@ -239,12 +253,14 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
                         Read Specification
                       </Link>
                       <a
-                        href={product.checkout_url}
+                        href={sanitizeExternalUrl(product.checkout_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1.5 rounded-lg bg-[#2563EB] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1D4ED8] whitespace-nowrap shrink-0"
                       >
-                        {product.price_usd === 0 ? 'Get Free Kit' : `Buy Now — $${product.price_usd.toFixed(0)}`}
+                        {product.price_usd === 0
+                          ? 'Get Free Kit'
+                          : `Buy Now — ${formatUsdPrice(product.price_usd)}`}
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </a>
                     </div>
@@ -343,10 +359,17 @@ export default function StorefrontCatalog({ products, reviews }: StorefrontCatal
       <footer className="border-t border-white/10 bg-[#09090B]">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-xs text-zinc-400">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-              <span className="font-display font-semibold text-white">AXIAVONE</span>
-              <span className="mx-2" aria-hidden="true">·</span>
-              <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+            <div className="flex items-center gap-3">
+              <img
+                src={AXIAVONE_LOGO_URL}
+                alt="AXIAVONE"
+                className="h-9 w-9 rounded-lg border border-white/10 object-cover shrink-0"
+              />
+              <div>
+                <span className="font-display font-semibold text-white">AXIAVONE</span>
+                <span className="mx-2" aria-hidden="true">·</span>
+                <span>© {new Date().getFullYear()} AXIAVONE Digital Products. All rights reserved.</span>
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-6">
               <button

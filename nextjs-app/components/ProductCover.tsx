@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TIER_LABELS, type ProductTier } from '@/lib/types';
+import { resolveProductCoverUrl } from '@/config/productCovers';
 
 interface ProductCoverProps {
   slug: string;
@@ -29,11 +30,16 @@ export default function ProductCover({
   className = '',
 }: ProductCoverProps) {
   const [failed, setFailed] = useState(false);
+  const resolvedUrl = resolveProductCoverUrl(slug, imageUrl);
 
-  if (imageUrl && !failed) {
+  useEffect(() => {
+    setFailed(false);
+  }, [resolvedUrl, slug]);
+
+  if (resolvedUrl && !failed) {
     return (
       <img
-        src={imageUrl}
+        src={resolvedUrl}
         alt={title}
         referrerPolicy="no-referrer"
         onError={() => setFailed(true)}
